@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown - Sonic.exe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Press Start 2P', cursive;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: black;
+            color: red;
+            overflow: hidden;
+            margin: 0;  /* Eliminar margen para evitar desplazamiento */
+        }
+
+        #hud {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-width: 800px; /* Limitar el ancho del HUD */
+            max-height: 600px; /* Limitar el alto del HUD */
+            overflow: hidden; /* Ocultar cualquier contenido que exceda los límites */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #countdown {
+            font-size: 4em;
+            text-align: center;
+            z-index: 2;
+            transition: color 0.5s;  /* Transición suave para el cambio de color */
+            background-color: rgba(0, 0, 0, 0.7);  /* Fondo semi-transparente */
+            padding: 20px;
+            border-radius: 15px;  /* Bordes redondeados */
+            border: 5px solid red;  /* Borde rojo */
+        }
+
+        .phrase {
+            position: absolute;
+            font-size: 2em;
+            opacity: 0;
+            animation: fadeInOut 4s ease-in-out;
+            z-index: 3;  /* Asegurarse de que las frases estén sobre el contador */
+            white-space: nowrap;  /* Evitar que el texto se divida en varias líneas */
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% {
+                opacity: 0;
+                transform: translate(0, 0);
+            }
+            10%, 90% {
+                opacity: 1;
+            }
+        }
+
+        #countdown::before {
+            content: 'YOU CAN\'T RUN';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            font-size: 1.5em;  /* Tamaño reducido */
+            color: rgba(255, 0, 0, 0.3);
+            z-index: 1;
+            text-align: center;
+            animation: blinkSonicText 1.5s infinite;
+        }
+
+        @keyframes blinkSonicText {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Media Queries para Responsividad */
+        @media (max-width: 768px) {
+            #countdown {
+                font-size: 3em;  /* Tamaño más pequeño en pantallas más pequeñas */
+            }
+            .phrase {
+                font-size: 1.5em;  /* Tamaño más pequeño para frases */
+            }
+        }
+        @media (max-width: 480px) {
+            #countdown {
+                font-size: 2.5em;  /* Aún más pequeño en pantallas muy pequeñas */
+            }
+            .phrase {
+                font-size: 1.2em;  /* Aún más pequeño para frases */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="hud">
+        <div id="countdown"></div>
+    </div>
+
+    <script>
+        const countdownElement = document.getElementById('countdown');
+
+        // Verificar si el contador ya fue mostrado
+        if (localStorage.getItem('countdownShown')) {
+            window.location.href = "video.html"; // Redirigir si ya se mostró
+        }
+
+        // Frases de personajes
+        const sonicPhrases = [
+            "I AM GOD",
+            "YOU'RE TOO SLOW!",
+            "YOU CAN'T RUN",
+            "IT'S NO USE",
+            "TIME'S UP!",
+            "SEE YOU SOON...",
+            "RUN WHILE YOU CAN!",
+            "I'LL ALWAYS BE WATCHING YOU...",
+            "DID YOU THINK YOU'D ESCAPE?",
+            "YOUR FRIENDS AREN'T COMING TO HELP YOU!",
+            "SILENCE!",
+            "FEEL THE DARKNESS!",
+            "I'LL FIND YOU...",
+            "WELCOME TO YOUR NIGHTMARE!",
+            "YOUR TIME IS UP!",
+            "I'LL TAKE YOUR SOUL...",
+            "ARE YOU READY TO PLAY?",
+            "DON'T CLOSE YOUR EYES...",
+            "YOUR HOPE IS LOST!",
+            "YOU WILL NEVER ESCAPE ME!",
+            "YOU THINK YOU CAN RUN?",
+            "THIS IS JUST THE BEGINNING...",
+            "YOUR NIGHTMARES ARE MY REALITY!",
+            "I WILL BREAK YOU...",
+            "I AM YOUR END!",
+            "YOU CAN'T HIDE FOREVER!",
+            "FEEL THE FEAR!"
+        ];
+
+        const tailsPhrases = [
+            "Don't worry, I've got your back!",
+            "Sonic can't do anything to us!",
+            "Let's work together!",
+            "We can win this battle!",
+            "There's no time to waste!",
+            "Trust me, we'll be fine!",
+            "Sonic can't catch us if we're together!",
+            "Let's show him who we are!",
+            "We can't give up now!",
+            "I'll be with you until the end!",
+            "There's always a way out!",
+            "We must be clever!",
+            "This isn't the end, there's hope!",
+            "Together we're stronger!",
+            "Sonic, come and fight!",
+            "I'll make you feel the power of friendship!",
+            "Always by your side, friend!",
+            "Sonic, don't give up!"
+        ];
+
+        const knucklesPhrases = [
+            "Leave it to me!",
+            "Don't underestimate me, Sonic!",
+            "I'll give you a good fight!",
+            "This time you won't escape!",
+            "Feel the power of Knuckles!",
+            "Don't touch me!",
+            "You're in my territory!",
+            "I'll show you what strength is!",
+            "We'll fight till the end!",
+            "You can't win against us!",
+            "I'll face you without fear!",
+            "There's no turning back!",
+            "You're destroying what we love!",
+            "I won't let you get away with this!",
+            "My fists will speak for me!",
+            "The battle has just begun!",
+            "You're not the only one with strength!"
+        ];
+
+        const eggmanPhrases = [
+            "My machines are unbeatable!",
+            "You'll regret this!",
+            "I'm a genius!",
+            "Sonic, your time is over!",
+            "You'll see what my machines can do!",
+            "Your efforts are useless!",
+            "My plans are foolproof!",
+            "You won't be able to stop me!",
+            "I'm Eggman, and no one can stop me!",
+            "I'll crush you!",
+            "My robots will smash you!",
+            "Technology always wins!",
+            "This is just the beginning of my reign!",
+            "Sonic, you will fall before me!",
+            "My inventions are superior!",
+            "Surrender and save trouble!",
+            "You won't defeat me, never!"
+        ];
+
+        const survivorPhrases = [
+            "We are not afraid, Sonic!",
+            "We won't let you win!",
+            "This is our last effort!",
+            "We challenge you, come at us!",
+            "We won't fall so easily!",
+            "We are more united than ever!",
+            "We won't let you destroy us!",
+            "We'll fight until the end!",
+            "No matter what you do, you'll never catch us!",
+            "We're here to stay, Sonic!",
+            "We'll have faith till the end!",
+            "We will never give up!",
+            "We will face you together!",
+            "Don't let fear conquer you!",
+            "We'll always be with you!",
+            "Together we're unstoppable!",
+            "I won't let you take my friends!"
+        ];
+
+        const battlePhrases = [
+            "This is for my friends!",
+            "I won't let you get away with this!",
+            "I'll fight till the end!",
+            "You're nothing to me!",
+            "This is our battle, Sonic!",
+            "You have no chance!",
+            "I won't allow you to hurt anyone else!",
+            "I'll make you pay for this!",
+            "I won't give up without a fight!",
+            "Your days are numbered, Sonic!",
+            "I can feel your fear, Sonic!",
+            "Every hit counts!",
+            "Now's not the time to give up!",
+            "I won't let you win so easily!",
+            "This isn't over yet!",
+            "Your tricks won't work here!",
+            "You won't escape from us!"
+        ];
+
+        // Configurar frases y colores
+        const allPhrases = [
+            ...sonicPhrases.map(text => ({ text, color: "red", character: "sonic", probability: 0.1 })),  // Probabilidad mínima 10%
+            ...tailsPhrases.map(text => ({ text, color: "orange", character: "tails", probability: 0.1 })),
+            ...knucklesPhrases.map(text => ({ text, color: "purple", character: "knuckles", probability: 0.1 })),
+            ...eggmanPhrases.map(text => ({ text, color: "yellow", character: "eggman", probability: 0.1 })),
+            ...survivorPhrases.map(text => ({ text, color: "blue", character: "survivor", probability: 0.1 })),
+            ...battlePhrases.map(text => ({ text, color: "cyan", character: "battle", probability: 0.1 })),
+        ];
+
+        let lastPhraseTime = Date.now();
+        const cooldown = 5000;  // 5 segundos
+
+        function createRandomPhrase() {
+            const now = Date.now();
+
+            // Controlar el cooldown
+            if (now - lastPhraseTime < cooldown) {
+                return;  // No crear frase si está en cooldown
+            }
+            lastPhraseTime = now;
+
+            // Elegir frase aleatoria con probabilidad mínima
+            const filteredPhrases = allPhrases.filter(p => Math.random() < p.probability);
+            if (filteredPhrases.length === 0) return;  // No crear frase si no hay ninguna
+
+            const randomIndex = Math.floor(Math.random() * filteredPhrases.length);
+            const { text, color } = filteredPhrases[randomIndex];
+
+            // Crear un elemento de frase
+            const phraseElement = document.createElement('div');
+            phraseElement.className = 'phrase';
+            phraseElement.textContent = text;
+            phraseElement.style.color = color;
+
+            // Posición aleatoria (ajustada para que no se salga de la pantalla)
+            const phraseHeight = 50; // Ajusta este valor según el tamaño de fuente
+            const phraseWidth = 200;  // Ajusta este valor según el tamaño de fuente
+
+            const maxHeight = window.innerHeight * 0.8 - phraseHeight;  // Limitar el 80% de la altura
+            const maxWidth = window.innerWidth * 0.8 - phraseWidth;      // Limitar el 80% del ancho
+
+            phraseElement.style.top = Math.random() * maxHeight + 'px';
+            phraseElement.style.left = Math.random() * maxWidth + 'px';
+
+            document.body.appendChild(phraseElement);
+
+            // Remover frase después de 4 segundos
+            setTimeout(() => {
+                document.body.removeChild(phraseElement);
+            }, 4000);
+        }
+
+        // Crear frases aleatorias cada 5 segundos
+        setInterval(createRandomPhrase, 5000);
+
+        // Establecer el contador hasta el 31 de octubre a las 2 PM (hora de México)
+        const targetDate = new Date('2024-10-31T14:00:00-06:00').getTime(); // Ajustado para UTC-6 (Ciudad de México)
+
+        const interval = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+            // Cambiar el color del contador
+            if (distance > 300000) {  // Más de 5 minutos
+                countdownElement.style.color = "rgba(0, 255, 0, 0.7)";  // Verde
+            } else if (distance > 120000) {  // Más de 2 minutos
+                countdownElement.style.color = "rgba(255, 165, 0, 0.7)";  // Naranja
+            } else if (distance > 0) {  // Menos de 2 minutos
+                countdownElement.style.color = "rgba(255, 0, 0, 0.7)";  // Rojo
+            } else {  // Tiempo agotado
+                countdownElement.innerHTML = "TIME'S UP!";
+                clearInterval(interval);
+                localStorage.setItem('countdownShown', 'true'); // Guardar estado de visualización
+                window.location.href = "video.html";  // Redirigir a video.html
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
