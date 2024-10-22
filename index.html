@@ -103,8 +103,11 @@
         <div id="countdown"></div>
     </div>
 
+    <audio id="sonicLaugh" src="ruta/a/la/risa_de_sonic.mp3" preload="auto"></audio> <!-- Cambia la ruta según sea necesario -->
+
     <script>
         const countdownElement = document.getElementById('countdown');
+        const sonicLaugh = document.getElementById('sonicLaugh');
 
         // Verificar si el contador ya fue mostrado
         if (localStorage.getItem('countdownShown')) {
@@ -245,88 +248,68 @@
 
         // Configurar frases y colores
         const allPhrases = [
-            ...sonicPhrases.map(text => ({ text, color: "red", character: "sonic", probability: 0.1 })),  // Probabilidad mínima 10%
-            ...tailsPhrases.map(text => ({ text, color: "orange", character: "tails", probability: 0.1 })),
-            ...knucklesPhrases.map(text => ({ text, color: "purple", character: "knuckles", probability: 0.1 })),
-            ...eggmanPhrases.map(text => ({ text, color: "yellow", character: "eggman", probability: 0.1 })),
-            ...survivorPhrases.map(text => ({ text, color: "blue", character: "survivor", probability: 0.1 })),
-            ...battlePhrases.map(text => ({ text, color: "cyan", character: "battle", probability: 0.1 })),
+            ...sonicPhrases.map(text => ({ text, color: "red", character: "sonic", probability: 0.1 })),
+            ...tailsPhrases.map(text => ({ text, color: "orange", character: "tails", probability: 0.05 })),
+            ...knucklesPhrases.map(text => ({ text, color: "purple", character: "knuckles", probability: 0.05 })),
+            ...eggmanPhrases.map(text => ({ text, color: "yellow", character: "eggman", probability: 0.05 })),
+            ...survivorPhrases.map(text => ({ text, color: "blue", character: "survivor", probability: 0.05 })),
+            ...battlePhrases.map(text => ({ text, color: "cyan", character: "battle", probability: 0.1 }))
         ];
 
-        let lastPhraseTime = Date.now();
-        const cooldown = 5000;  // 5 segundos
+        let countdownDate = new Date("2024-10-31T14:00:00-06:00").getTime(); // Fecha y hora de la cuenta regresiva
+        let countdownInterval = setInterval(function() {
+            let now = new Date().getTime();
+            let distance = countdownDate - now;
 
-        function createRandomPhrase() {
-            const now = Date.now();
+            let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            // Controlar el cooldown
-            if (now - lastPhraseTime < cooldown) {
-                return;  // No crear frase si está en cooldown
+            countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s `;
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                localStorage.setItem('countdownShown', 'true');
+                window.location.href = "video.html"; // Redirigir al video después de la cuenta regresiva
             }
-            lastPhraseTime = now;
 
-            // Elegir frase aleatoria con probabilidad mínima
-            const filteredPhrases = allPhrases.filter(p => Math.random() < p.probability);
-            if (filteredPhrases.length === 0) return;  // No crear frase si no hay ninguna
+            // Generar frases aleatorias
+            generateRandomPhrase();
 
-            const randomIndex = Math.floor(Math.random() * filteredPhrases.length);
-            const { text, color } = filteredPhrases[randomIndex];
+        }, 1000);
 
-            // Crear un elemento de frase
-            const phraseElement = document.createElement('div');
-            phraseElement.className = 'phrase';
-            phraseElement.textContent = text;
+        function generateRandomPhrase() {
+            let randomIndex = Math.floor(Math.random() * allPhrases.length);
+            let phrase = allPhrases[randomIndex];
+            let minProbability = Math.random(); // Probabilidad mínima
+
+            if (phrase.probability > minProbability) { // Solo se muestran frases según su probabilidad
+                displayPhrase(phrase.text, phrase.color);
+            }
+        }
+
+        function displayPhrase(text, color) {
+            let phraseElement = document.createElement("div");
+            phraseElement.className = "phrase";
             phraseElement.style.color = color;
+            phraseElement.innerHTML = text;
 
-            // Posición aleatoria (ajustada para que no se salga de la pantalla)
-            const phraseHeight = 50; // Ajusta este valor según el tamaño de fuente
-            const phraseWidth = 200;  // Ajusta este valor según el tamaño de fuente
-
-            const maxHeight = window.innerHeight * 0.8 - phraseHeight;  // Limitar el 80% de la altura
-            const maxWidth = window.innerWidth * 0.8 - phraseWidth;      // Limitar el 80% del ancho
-
-            phraseElement.style.top = Math.random() * maxHeight + 'px';
-            phraseElement.style.left = Math.random() * maxWidth + 'px';
+            // Posicionar la frase en una posición aleatoria
+            phraseElement.style.top = Math.random() * (window.innerHeight - 100) + "px"; // Rango de altura
+            phraseElement.style.left = Math.random() * (window.innerWidth - 300) + "px"; // Rango de ancho
 
             document.body.appendChild(phraseElement);
 
-            // Remover frase después de 4 segundos
+            // Animación de la frase
             setTimeout(() => {
-                document.body.removeChild(phraseElement);
-            }, 4000);
+                phraseElement.remove();
+            }, 4000); // Duración de la frase
         }
 
-        // Crear frases aleatorias cada 5 segundos
-        setInterval(createRandomPhrase, 5000);
+        // Reproducir risa de Sonic
+        sonicLaugh.play();
 
-        // Establecer el contador hasta el 31 de octubre a las 2 PM (hora de México)
-        const targetDate = new Date('2024-10-31T14:00:00-06:00').getTime(); // Ajustado para UTC-6 (Ciudad de México)
-
-        const interval = setInterval(() => {
-            const now = new Date().getTime();
-            const distance = targetDate - now;
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-
-            // Cambiar el color del contador
-            if (distance > 300000) {  // Más de 5 minutos
-                countdownElement.style.color = "rgba(0, 255, 0, 0.7)";  // Verde
-            } else if (distance > 120000) {  // Más de 2 minutos
-                countdownElement.style.color = "rgba(255, 165, 0, 0.7)";  // Naranja
-            } else if (distance > 0) {  // Menos de 2 minutos
-                countdownElement.style.color = "rgba(255, 0, 0, 0.7)";  // Rojo
-            } else {  // Tiempo agotado
-                countdownElement.innerHTML = "TIME'S UP!";
-                clearInterval(interval);
-                localStorage.setItem('countdownShown', 'true'); // Guardar estado de visualización
-                window.location.href = "video.html";  // Redirigir a video.html
-            }
-        }, 1000);
     </script>
 </body>
 </html>
