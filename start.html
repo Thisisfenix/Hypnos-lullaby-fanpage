@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start - Sonic.exe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+            background-color: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Press Start 2P', cursive;
+            color: white;
+            position: relative;
+        }
+        #sonicLogo {
+            max-width: 80%;
+            height: auto;
+            display: none; /* Inicialmente oculto */
+        }
+        #pressStart {
+            margin-top: 20px;
+            cursor: pointer;
+            font-size: 2em;
+            text-align: center;
+            background-color: rgba(255, 0, 0, 0.5); /* Fondo rojo semi-transparente */
+            padding: 10px 20px;
+            border: none; /* Sin bordes */
+            border-radius: 5px; /* Bordes redondeados */
+            color: white;
+            transition: opacity 0.5s, background-color 0.3s;
+            display: none; /* Inicialmente oculto */
+        }
+        #pressStart:hover {
+            background-color: rgba(255, 0, 0, 0.8); /* Más opaco al pasar el mouse */
+        }
+        #background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('video\StaticNoise.gif'); /* Reemplaza con la ruta de tu fondo */
+            background-size: cover;
+            background-position: center;
+            z-index: -1; /* Enviar al fondo */
+        }
+    </style>
+</head>
+<body>
+    <div id="background"></div>
+    <audio id="sonicLaughStart" src="audio/sonic-exe-laugh.mp3" preload="auto"></audio>
+    <audio id="sonicLaughEnd" src="audio/sonic-exe-laugh-v2.mp3" preload="auto"></audio>
+    <img id="sonicLogo" src="video/LogoV2.png" alt="Sonic.exe Logo">
+    <div id="pressStart">Press Start to Begin</div>
+
+    <script>
+        const pressStart = document.getElementById('pressStart');
+        const sonicLaughStart = document.getElementById('sonicLaughStart');
+        const sonicLaughEnd = document.getElementById('sonicLaughEnd');
+        const sonicLogo = document.getElementById('sonicLogo');
+
+        // Reproduce la risa al cargar la página
+        window.onload = () => {
+            sonicLaughStart.play();
+            setTimeout(() => {
+                sonicLogo.style.display = 'block'; // Muestra el logo
+                pressStart.style.display = 'block'; // Muestra el botón
+            }, 2000); // Espera 2 segundos antes de mostrar el logo y el botón
+        };
+
+        pressStart.addEventListener('click', () => {
+            // Reproduce la risa de Sonic al hacer clic
+            sonicLaughEnd.play();
+
+            // Oculta todo y prepara la redirección
+            document.body.style.opacity = 0;
+            setTimeout(() => {
+                window.location.href = "https://thisisfenix.github.io/Vs-sonic.exe-mods/"; // Reemplaza con la URL deseada
+            }, 2000); // Espera 2 segundos antes de redirigir
+        });
+    </script>
+</body>
+</html>

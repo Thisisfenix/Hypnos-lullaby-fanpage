@@ -59,7 +59,7 @@
             white-space: nowrap;
             text-align: center;
             margin-top: 20px;
-            min-width: 300px; /* Ajustar el tamaño mínimo del contenedor */
+            min-width: 300px;
         }
 
         @keyframes blinkSonicText {
@@ -121,45 +121,38 @@
             "red", "orange", "purple", "yellow", "blue"
         ];
 
-        const countdownDate = new Date("2024-10-31T23:30:00-06:00").getTime();
+        // Temporizador de 15 minutos
+        const countdownDate = new Date().getTime() + 15 * 60 * 1000;
 
         function updateCountdown() {
             const now = new Date().getTime();
             const distance = countdownDate - now;
 
-            let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            countdownElement.innerHTML = `${minutes}m ${seconds}s`;
 
-            if (days <= 6 && days > 0) countdownElement.style.color = 'green';
-            else if (days <= 4 && days > 0) countdownElement.style.color = 'yellow';
-            else if (days <= 1 && days > 0) countdownElement.style.color = 'orange';
-            else if (days <= 0) {
+            if (distance <= 0) {
                 countdownElement.style.color = 'red';
                 countdownElement.innerHTML = "TIME'S UP!";
                 document.body.style.backgroundColor = "black";
                 sonicLaugh.play();
                 eerieMusic.play();
                 setTimeout(() => window.location.href = "video.html", 5000);
-                return;
             }
         }
 
         let currentPhraseIndex = 0;
 
         function displayPhrase() {
-            // Selecciona una frase aleatoria y un color
             currentPhraseIndex = Math.floor(Math.random() * phrases.length);
             phraseContainer.innerHTML = phrases[currentPhraseIndex];
             phraseContainer.style.color = phraseColors[Math.floor(Math.random() * phraseColors.length)];
         }
 
-        // Cambiar la frase cada 20 segundos
-        setInterval(displayPhrase, 20000); 
-        displayPhrase(); // Muestra la frase inicialmente
+        setInterval(displayPhrase, 20000);
+        displayPhrase();
 
         setInterval(updateCountdown, 1000);
     </script>
