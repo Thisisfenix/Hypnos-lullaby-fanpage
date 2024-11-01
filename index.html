@@ -121,17 +121,16 @@
             "red", "orange", "purple", "yellow", "blue"
         ];
 
-        // Temporizador de 15 minutos
-        const countdownDate = new Date().getTime() + 15 * 60 * 1000;
+        // Temporizador de 15 segundos
+        const countdownDate = new Date().getTime() + 15 * 1000; // Cambiado a 15 segundos
 
         function updateCountdown() {
             const now = new Date().getTime();
             const distance = countdownDate - now;
 
-            let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            countdownElement.innerHTML = `${minutes}m ${seconds}s`;
+            countdownElement.innerHTML = `${seconds}s`;
 
             if (distance <= 0) {
                 countdownElement.style.color = 'red';
@@ -151,7 +150,7 @@
             phraseContainer.style.color = phraseColors[Math.floor(Math.random() * phraseColors.length)];
         }
 
-        setInterval(displayPhrase, 20000);
+        setInterval(displayPhrase, 2000); // Cambiado a 2 segundos
         displayPhrase();
 
         setInterval(updateCountdown, 1000);
