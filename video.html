@@ -72,6 +72,13 @@
             continueButton.focus(); // Enfoca el botón para que pueda ser activado con la tecla Enter
         });
 
+        // Activa el sonido cuando el usuario interactúa con la página
+        document.addEventListener('click', () => {
+            if (mainVideo.muted) {
+                mainVideo.muted = false; // Activa el sonido
+            }
+        });
+
         // Redirige a la página de inicio
         function redirectToInicio() {
             window.location.href = "https://thisisfenix.github.io/Vs-sonic.exe-mods/";
