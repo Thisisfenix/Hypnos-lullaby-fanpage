@@ -25,28 +25,38 @@
             border: 5px solid red;
             border-radius: 15px;
             overflow: hidden;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.7); /* Sombra roja para un efecto más dramático */
         }
         video {
             width: 100%;
             height: auto;
+            display: block;
         }
         #continueButton {
             display: none;
             margin-top: 20px;
             padding: 10px 20px;
             font-size: 1em;
-            color: black;
+            color: white;
             background-color: red;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        #continueButton:hover {
+            background-color: darkred; /* Cambia el color al pasar el mouse */
+            transform: scale(1.1); /* Efecto de escala al pasar el mouse */
+        }
+        #continueButton:active {
+            transform: scale(0.9); /* Efecto de clic */
         }
     </style>
 </head>
 <body>
     <div id="videoContainer">
-        <video id="mainVideo" controls autoplay>
-            <source src="video\well_done.mp4.mp4" type="video/mp4">
+        <video id="mainVideo" autoplay muted>
+            <source src="video/well_done.mp4" type="video/mp4">
             Tu navegador no soporta el video HTML5.
         </video>
     </div>
@@ -56,13 +66,23 @@
         const mainVideo = document.getElementById('mainVideo');
         const continueButton = document.getElementById('continueButton');
 
+        // Reproduce el video automáticamente y muestra el botón al finalizar
         mainVideo.addEventListener('ended', () => {
-            continueButton.style.display = 'block'; // Muestra el botón cuando termina el video
+            continueButton.style.display = 'block'; // Muestra el botón
+            continueButton.focus(); // Enfoca el botón para que pueda ser activado con la tecla Enter
         });
 
+        // Redirige a la página de inicio
         function redirectToInicio() {
-            window.location.href = "inicio.html"; // Redirige a inicio.html cuando se presiona el botón
+            window.location.href = "https://thisisfenix.github.io/Vs-sonic.exe-mods/";
         }
+
+        // Permite usar la tecla Enter para continuar
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && continueButton.style.display === 'block') {
+                redirectToInicio();
+            }
+        });
     </script>
 </body>
 </html>

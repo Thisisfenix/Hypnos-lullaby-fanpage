@@ -24,23 +24,24 @@
         #sonicLogo {
             max-width: 80%;
             height: auto;
-            display: none; /* Inicialmente oculto */
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
         }
         #pressStart {
             margin-top: 20px;
             cursor: pointer;
             font-size: 2em;
             text-align: center;
-            background-color: rgba(255, 0, 0, 0.5); /* Fondo rojo semi-transparente */
+            background-color: rgba(255, 0, 0, 0.5);
             padding: 10px 20px;
-            border: none; /* Sin bordes */
-            border-radius: 5px; /* Bordes redondeados */
+            border: none;
+            border-radius: 5px;
             color: white;
             transition: opacity 0.5s, background-color 0.3s;
-            display: none; /* Inicialmente oculto */
+            opacity: 0;
         }
         #pressStart:hover {
-            background-color: rgba(255, 0, 0, 0.8); /* Más opaco al pasar el mouse */
+            background-color: rgba(255, 0, 0, 0.8);
         }
         #background {
             position: absolute;
@@ -48,10 +49,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('video/StaticNoise.gif'); /* Reemplaza con la ruta de tu fondo */
+            background-image: url('video/StaticNoise.gif'); 
             background-size: cover;
             background-position: center;
-            z-index: -1; /* Enviar al fondo */
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
         }
     </style>
 </head>
@@ -67,26 +70,36 @@
         const sonicLaughStart = document.getElementById('sonicLaughStart');
         const sonicLaughEnd = document.getElementById('sonicLaughEnd');
         const sonicLogo = document.getElementById('sonicLogo');
+        const background = document.getElementById('background');
 
-        // Reproduce la risa al cargar la página
+        // Secuencia de inicio
         window.onload = () => {
+            // 1. Reproduce la risa inicial
             sonicLaughStart.play();
+
+            // 2. Después de 1 segundo, muestra el fondo, el logo y el botón
             setTimeout(() => {
-                sonicLogo.style.display = 'block'; // Muestra el logo
-                pressStart.style.display = 'block'; // Muestra el botón
-            }, 2000); // Espera 2 segundos antes de mostrar el logo y el botón
+                background.style.opacity = 1; // Muestra el fondo
+                sonicLogo.style.opacity = 1; // Muestra el logo
+                pressStart.style.opacity = 1; // Muestra el botón
+            }, 1000);
+
+            // 3. Después de 3 segundos, reproduce la risa completa
+            setTimeout(() => {
+                sonicLaughEnd.play();
+
+                // 4. Oculta el logo y el botón después de la risa completa
+                setTimeout(() => {
+                    sonicLogo.style.opacity = 0;
+                    pressStart.style.opacity = 0;
+                }, 2000); // 2 segundos después de la risa completa
+
+                // 5. Redirige a la siguiente página después de 5 segundos
+                setTimeout(() => {
+                    window.location.href = "video.html";
+                }, 5000); // 5 segundos después de la risa completa
+            }, 3000); // 3 segundos después de la risa inicial
         };
-
-        pressStart.addEventListener('click', () => {
-            // Reproduce la risa de Sonic al hacer clic
-            sonicLaughEnd.play();
-
-            // Oculta todo y prepara la redirección
-            document.body.style.opacity = 0;
-            setTimeout(() => {
-                window.location.href = "https://thisisfenix.github.io/Vs-sonic.exe-mods/"; // Reemplaza con la URL deseada
-            }, 2000); // Espera 2 segundos antes de redirigir
-        });
     </script>
 </body>
 </html>
