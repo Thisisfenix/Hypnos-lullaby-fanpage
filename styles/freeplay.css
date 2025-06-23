@@ -1,0 +1,88 @@
+/* Aplicando una fuente pixelada desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+    font-family: 'Press Start 2P', cursive; /* Fuente de estilo pixel */
+    background-color: black;
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    position: relative; /* Para permitir el posicionamiento absoluto de las canciones */
+    overflow: hidden; /* Oculta el contenido que se desborda */
+}
+
+.song-box {
+    display: inline-block;
+    border: 0px solid rgb(0, 0, 0); /* Solo bordes amarillos */
+    padding: 20px;
+    width: 400px;
+    height: 400px; /* Ajuste del tamaño */
+    background-color: black; /* Fondo negro */
+    transition: transform 0.3s ease-in-out; /* Suaviza la animación de deslizamiento */
+    cursor: pointer;
+    position: absolute; /* Permite que se superponga en el contenedor */
+}
+
+.song-box:hover {
+    transform: scale(1.05);
+}
+
+.mod-image {
+    width: 100%;
+    height: auto;
+}
+
+/* Cambiar el color del título del mod a rojo al pasar el mouse */
+.mod-title {
+    color: white;
+    margin-top: 10px;
+    transition: color 0.3s ease-in-out;
+}
+
+.song-box:hover .mod-title {
+    color: red; /* Cambia el título del mod a rojo cuando el cuadro es seleccionado */
+}
+
+/* Flechas de navegación */
+.arrow {
+    font-size: 3em;
+    cursor: pointer;
+    color: white;
+    margin: 0 20px;
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.arrow:hover {
+    transform: scale(1.2);
+    color: yellow;
+}
+
+.back-button {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 10px 20px;
+    background-color: blue;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1.2em;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.back-button:hover {
+    background-color: darkblue;
+    transform: scale(1.1);
+    text-decoration: underline;
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freeplay - Sonic.exe</title>
+    <link rel="stylesheet" href="styles/freeplay.css">
+    <style>
+        /* Estilos de animación */
+        .song-box {
+            position: relative;
+            overflow: hidden; /* Asegúrate de que el contenido adicional no sea visible */
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">Freeplay</h1>
+
+    <div class="container">
+        <span class="arrow" id="prev">&#9664;</span>
+        <div class="song-box" id="songDisplay">
+            <img src="images/mod-image.png" alt="Imagen del Mod" class="mod-image">
+            <p class="mod-title">Canción 1 - Substantial Digitalized</p>
+        </div>
+        <span class="arrow" id="next">&#9654;</span>
+    </div>
+
+    <!-- Música de fondo -->
+    <audio id="freeplayMusic" src="sounds/Freeplay.ogg" loop autoplay></audio>
+
+    <script src="js/freeplay.js"></script>
+</body>
+</html>

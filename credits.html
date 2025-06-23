@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créditos - Sonic.exe</title>
+    <link rel="stylesheet" href="styles/credits.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="credits-container">
+        <div class="background">
+            <!-- Música de fondo -->
+            <audio id="backgroundMusic" src="sounds/Credits.ogg" loop></audio>
+            <!-- Contenedor de Créditos -->
+            <div class="credits-content">
+                <div class="credit-item">
+                    <img src="images/icon1.png" alt="Icono Usuario 1" class="credit-icon">
+                    <span class="credit-name">Usuario 1</span>
+                </div>
+                <div class="credit-item">
+                    <img src="images/icon2.png" alt="Icono Usuario 2" class="credit-icon">
+                    <span class="credit-name">Usuario 2</span>
+                </div>
+                <!-- Agrega más elementos de crédito aquí -->
+            </div>
+            <div class="navigation-buttons">
+                <button id="prevButton" class="nav-button">←</button>
+                <button id="nextButton" class="nav-button">→</button>
+            </div>
+            <a href="index.html" class="back-button">Volver al Menú</a>
+        </div>
+
+        <script src="js/credits.js"></script>
+    </div>
+</body>
+</html>

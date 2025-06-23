@@ -1,0 +1,72 @@
+/* Global Styles */
+body {
+    font-family: 'Press Start 2P', cursive;
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    color: white;
+    overflow: hidden; /* Para evitar scrollbars si hay elementos desbordantes */
+}
+
+.story-mode-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    position: relative;
+}
+
+.song-container {
+    margin-bottom: 2rem;
+}
+
+.song-icon {
+    width: 300px; /* Ajusta según el tamaño de tu ícono */
+    height: auto;
+}
+
+.download-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.download-link {
+    display: flex;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    gap: 1rem;
+    transition: color 0.3s;
+}
+
+.download-link:hover {
+    color: #007bff;
+}
+
+.song-icon {
+    width: 100px; /* Ajusta según el tamaño de los íconos de las canciones */
+    height: auto;
+}
+
+.back-button {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    color: #fff;
+    background-color: #dc3545;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 2rem;
+}
+
+.back-button:hover {
+    background-color: #c82333;
+}

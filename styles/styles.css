@@ -1,0 +1,47 @@
+/* Global Styles */
+body {
+    font-family: 'Press Start 2P', cursive;
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    color: white;
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+}
+
+.page-background {
+    position: relative;
+}
+
+.title img {
+    width: 400px; /* Ajustar tamaño según necesidad */
+    height: auto;
+}
+
+.menu-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem; /* Espacio entre los botones */
+    margin-top: 2rem;
+}
+
+.menu-button img {
+    width: 250px; /* Tamaño de los botones */
+    height: auto;
+    border: 0px solid #000000; /* Opcional: agrega borde blanco */
+    border-radius: 10px; /* Opcional: bordes redondeados */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.menu-button img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 0px rgba(0, 0, 0, 0.5); /* Opcional: sombra al pasar el ratón */
+}

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hypno's Lullaby Pokedex</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <!-- Estilo personalizado -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        body {
+            font-family: 'Press Start 2P', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .pokedex {
+            width: 700px;
+            background-color: #ffffff;
+            border: 2px solid #000;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .info-area {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .pokemon-left {
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .pokemon-left h2 {
+            margin: 10px 0;
+        }
+
+        .pokemon-left p {
+            font-size: 14px;
+            color: #555;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .imagen-pokemon img {
+            width: 100%;
+            max-width: 200px;
+            border: 2px solid #000;
+            border-radius: 5px;
+        }
+
+        .info-right {
+            flex: 1;
+            margin-left: 20px;
+            max-width: 300px;
+        }
+
+        .menu-lateral {
+            list-style: none;
+            padding: 0;
+        }
+
+        .menu-lateral li {
+            padding: 10px 5px;
+            cursor: pointer;
+            text-align: left;
+            background-color: #f8f9fa;
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+
+        .menu-lateral li:hover, .menu-lateral li.active {
+            background-color: #ddd;
+            font-weight: bold;
+        }
+
+        .stats {
+            margin-top: 10px;
+            font-size: 12px;
+        }
+
+        .description-panel {
+            background-color: #e8e8e8;
+            border: 2px solid #000;
+            padding: 10px;
+            margin-top: 15px;
+            box-shadow: inset 2px 2px 0 #000;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, opacity 0.5s ease;
+        }
+
+        .description-panel.show {
+            max-height: 150px;
+            opacity: 1;
+            overflow-y: auto;
+        }
+
+        .description-panel::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .description-panel::-webkit-scrollbar-thumb {
+            background-color: #000;
+            border-radius: 5px;
+        }
+
+        .toggle-description {
+            background-color: #ddd;
+            border: 2px solid #000;
+            padding: 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-family: 'Press Start 2P', sans-serif;
+            margin-top: 10px;
+            text-align: center;
+            width: calc(100% - 120px);
+            display: inline-block;
+        }
+
+        .back-button {
+            background-color: #ddd;
+            border: 2px solid #000;
+            padding: 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-family: 'Press Start 2P', sans-serif;
+            margin-top: 10px;
+            text-align: center;
+            width: 100px;
+            display: inline-block;
+        }
+
+        .description-text {
+            white-space: pre-wrap;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="pokedex">
+        <!-- Área de información -->
+        <div class="info-area">
+            <!-- Parte izquierda -->
+            <div class="pokemon-left">
+                <h2 id="pokemon-name">Gold (Frostbite)</h2>
+                <p id="pokemon-subtitle">The Tortured Trainer</p>
+                <div class="imagen-pokemon">
+                    <img id="pokemon-image" src="images/gold_frostbite.png" alt="Gold (Frostbite)">
+                </div>
+            </div>
+
+            <!-- Parte derecha -->
+            <div class="info-right">
+                <ul class="menu-lateral" id="pokemon-list">
+                    <li onclick="selectPokemon(0)" class="active">Gold (Frostbite)</li>
+                    <li onclick="selectPokemon(1)">Red (Dead Red)</li>
+                    <li onclick="selectPokemon(2)">Pikachu (Freakachu)</li>
+                    <li onclick="selectPokemon(3)">Silver</li>
+                </ul>
+                <div class="stats">
+                    <p>HT: <span id="pokemon-height">???</span> WT: <span id="pokemon-weight">???</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel de descripción -->
+        <div class="description-panel" id="description-panel">
+            <p id="description-content" class="description-text">
+Gold, trapped in a frozen nightmare, bears the scars of his torment.
+            </p>
+            <p id="pokemon-stats" class="description-text">HT: ??? WT: ???</p>
+        </div>
+
+        <!-- Botones debajo de la descripción -->
+        <a href="index.html" class="back-button">Back</a>
+        <button class="toggle-description" onclick="toggleDescription()">Toggle Description</button>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="js/bootstrap.bundle.js"></script>
+
+    <!-- Script personalizado -->
+    <script>
+        const pokemonData = [
+            {
+                name: "Gold (Frostbite)",
+                subtitle: "The Tortured Trainer",
+                image: "images/gold_frostbite.png",
+                description: "Gold, trapped in a frozen nightmare, bears the scars of his torment.",
+                height: "???",
+                weight: "???"
+            },
+            {
+                name: "Red (Dead Red)",
+                subtitle: "The Silent Wanderer",
+                image: "images/red_dead_red.png",
+                description: "A shadow of his former self, Red roams with a haunting presence.",
+                height: "1.7m",
+                weight: "65kg"
+            },
+            {
+                name: "Pikachu (Freakachu)",
+                subtitle: "The Corrupted Partner",
+                image: "images/pikachu_freakachu.png",
+                description: "Once a loyal companion, Pikachu is now an unrecognizable creature.",
+                height: "0.4m",
+                weight: "6kg"
+            },
+            {
+                name: "Silver",
+                subtitle: "The Forsaken Rival",
+                image: "images/silver.png",
+                description: "Silver’s pursuit of power has left him a broken shell of a trainer.",
+                height: "1.8m",
+                weight: "70kg"
+            }
+        ];
+
+        function selectPokemon(index) {
+            const currentPokemon = pokemonData[index];
+            document.getElementById("pokemon-name").innerText = currentPokemon.name;
+            document.getElementById("pokemon-subtitle").innerText = currentPokemon.subtitle || "";
+            document.getElementById("pokemon-image").src = currentPokemon.image;
+            document.getElementById("pokemon-image").alt = currentPokemon.name;
+            document.getElementById("description-content").innerText = currentPokemon.description;
+            document.getElementById("pokemon-stats").innerText = `HT: ${currentPokemon.height} WT: ${currentPokemon.weight}`;
+
+            // Activar el Pokémon seleccionado
+            document.querySelectorAll('.menu-lateral li').forEach((li, idx) => {
+                li.classList.toggle('active', idx === index);
+            });
+        }
+
+        function toggleDescription() {
+            const panel = document.getElementById("description-panel");
+            panel.classList.toggle("show");
+        }
+
+        function goBack() {
+            alert("Going back..."); // Aquí puedes añadir la lógica para volver a la pantalla anterior.
+        }
+
+        // Inicializar con el primer Pokémon
+        selectPokemon(0);
+    </script>
+</body>
+</html>
