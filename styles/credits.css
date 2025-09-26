@@ -314,4 +314,8 @@ html, body {
         font-size: 5px;
         line-height: 1.2;
     }
+    
+    .back-button {
+        z-index: 2000;
+    }
 }
