@@ -20,7 +20,7 @@ body {
     width: 95vw;
     height: 95vh;
     background-image: url('../gifs/credits_tv.gif?v=2');
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     position: relative;
@@ -174,28 +174,79 @@ body {
 
 @media (max-width: 768px) {
     .tv-container {
-        width: 95vw;
-        height: 95vh;
+        width: 100vw;
+        height: 100vh;
+        background-size: cover;
+        margin: 0;
+    }
+    
+    .tv-screen {
+        width: 85vw;
+        height: 70vh;
+        top: 5%;
+        left: 50%;
+        transform: translateX(-50%);
     }
     
     .screen-content {
         flex-direction: column;
-        padding: 10px;
+        padding: 8px;
+        gap: 8px;
     }
     
     .left-side {
         flex: none;
-        height: 40%;
+        height: 30%;
+        position: relative;
+    }
+    
+    .character-portraits {
+        width: 80px;
+        height: 100px;
+        gap: 8px;
+        padding: 10px;
+    }
+    
+    .character-icon {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .navigation-arrows {
+        left: -15px;
+        gap: 8px;
+    }
+    
+    .arrow {
+        font-size: 16px;
     }
     
     .right-side {
         flex: none;
-        height: 60%;
+        height: 70%;
         padding-left: 0;
-        padding-top: 10px;
+        padding-top: 0;
+    }
+    
+    .credit-box {
+        padding: 15px;
+        gap: 10px;
+    }
+    
+    .credit-header {
+        font-size: 14px;
+    }
+    
+    .credit-subtitle {
+        font-size: 7px;
+    }
+    
+    .credit-quote {
+        font-size: 6px;
     }
     
     .credit-description {
-        font-size: 6px;
+        font-size: 5px;
+        line-height: 1.2;
     }
 }
