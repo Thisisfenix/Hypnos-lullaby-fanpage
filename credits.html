@@ -9,28 +9,35 @@
 </head>
 <body>
     <div class="credits-container">
-        <div class="background">
-            <!-- Música de fondo -->
-            <audio id="backgroundMusic" src="sounds/Credits.ogg" loop></audio>
-            <!-- Contenedor de Créditos -->
-            <div class="credits-content">
-                <div class="credit-item">
-                    <img src="images/icon1.png" alt="Icono Usuario 1" class="credit-icon">
-                    <span class="credit-name">Usuario 1</span>
+        <!-- Música de fondo -->
+        <audio id="backgroundMusic" src="sounds/Credits.ogg" loop muted></audio>
+        
+        <!-- TV Container -->
+        <div class="tv-container">
+            <div class="tv-screen">
+                <div class="screen-content">
+                    <div class="left-side">
+                        <div class="character-portraits"></div>
+                        <div class="navigation-arrows">
+                            <div class="arrow up" id="upArrow">▲</div>
+                            <div class="arrow down" id="downArrow">▼</div>
+                        </div>
+                    </div>
+                    <div class="right-side">
+                        <div class="credit-box">
+                            <div class="credit-header" id="creditHeader">Banbuds</div>
+                            <div class="credit-subtitle" id="creditSubtitle">Director, Artist, Animator & Voice Actor</div>
+                            <div class="credit-quote" id="creditQuote">"Where are her fat tits"</div>
+                            <div class="credit-description" id="creditDescription">
+                                "I'm sure you've heard of me. I'm the amazing Banbuds. I have made every mod in existence. I came up with the idea of Hypno's Lullaby last year on a whim and an obsession about Hypno that has turned into. Thank you everyone who helped to make this a thing, and thank you for playing. I say a lot of dumb shit, and you can't stop me from doing so. sniffles."
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="credit-item">
-                    <img src="images/icon2.png" alt="Icono Usuario 2" class="credit-icon">
-                    <span class="credit-name">Usuario 2</span>
-                </div>
-                <!-- Agrega más elementos de crédito aquí -->
             </div>
-            <div class="navigation-buttons">
-                <button id="prevButton" class="nav-button">←</button>
-                <button id="nextButton" class="nav-button">→</button>
-            </div>
-            <a href="index.html" class="back-button">Volver al Menú</a>
         </div>
-
+        
+        <a href="index.html" class="back-button">ESC</a>
         <script src="js/credits.js"></script>
     </div>
 </body>

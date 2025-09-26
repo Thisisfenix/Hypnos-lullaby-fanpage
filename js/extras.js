@@ -1,5 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
     const extraMusic = document.getElementById('extraMusic');
+    let audioStarted = false;
+    
+    function startAudio() {
+        if (!audioStarted) {
+            extraMusic.muted = false;
+            extraMusic.play().catch(e => console.log('Audio play failed:', e));
+            audioStarted = true;
+        }
+    }
+    
+    document.addEventListener('click', startAudio);
+    document.addEventListener('keydown', startAudio);
     const playPauseBtn = document.getElementById('playPauseBtn');
     const volumeUpBtn = document.getElementById('volumeUpBtn');
     const volumeDownBtn = document.getElementById('volumeDownBtn');

@@ -1,35 +1,86 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const creditItems = document.querySelectorAll('.credit-item');
-    let currentIndex = 0;
-    
-    function updateDisplay() {
-        creditItems.forEach((item, index) => {
-            item.style.display = (index === currentIndex) ? 'flex' : 'none';
-        });
+const creditsData = [
+    {
+        name: "nowzuq",
+        role: "Porteador",
+        quote: "\"Llevando Hypno's Lullaby a móviles\"",
+        description: "\"Soy nowzuq y estoy trabajando en portear el mod de Hypno's Lullaby a Funky Maker Mobile para que sea accesible en dispositivos móviles. ¡Es emocionante ayudar a expandir el alcance de este increíble mod!\"",
+        icon: "icons/nowzuq.png"
+    },
+    {
+        name: "ankush",
+        role: "Creador Web y Diseñador",
+        quote: "\"Meh brother creando el sitio web XD...\"",
+        description: "\"Soy ankush, el creador y diseñador del sitio web de Hypno's Lullaby. Diseñé y construí toda esta experiencia de fanpage desde cero. ¡Espero que disfrutes explorando el mundo de Hypno a través de esta interfaz!\"",
+        icon: "icons/ankush.png"
     }
+];
+
+let currentIndex = 0;
+let audioStarted = false;
+let backgroundMusic;
+
+function startAudio() {
+    if (!audioStarted && backgroundMusic) {
+        backgroundMusic.muted = false;
+        backgroundMusic.play().catch(e => console.log('Audio play failed:', e));
+        audioStarted = true;
+    }
+}
+
+function updateCredits() {
+    const credit = creditsData[currentIndex];
+    document.getElementById('creditHeader').textContent = credit.name;
+    document.getElementById('creditSubtitle').textContent = credit.role;
+    document.getElementById('creditQuote').textContent = credit.quote;
+    document.getElementById('creditDescription').textContent = credit.description;
     
-    document.getElementById('prevButton').addEventListener('click', () => {
-        if (currentIndex > 0) {
-            currentIndex--;
-        } else {
-            currentIndex = creditItems.length - 1;
+    // Actualizar iconos
+    const portraitsContainer = document.querySelector('.character-portraits');
+    portraitsContainer.innerHTML = '';
+    
+    creditsData.forEach((person, index) => {
+        if (person.icon) {
+            const iconImg = document.createElement('img');
+            iconImg.src = person.icon;
+            iconImg.alt = person.name;
+            iconImg.className = 'character-icon';
+            if (index === currentIndex) {
+                iconImg.classList.add('selected');
+            }
+            portraitsContainer.appendChild(iconImg);
         }
-        updateDisplay();
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    backgroundMusic = document.getElementById('backgroundMusic');
+    
+    document.getElementById('upArrow').addEventListener('click', () => {
+        startAudio();
+        currentIndex = (currentIndex - 1 + creditsData.length) % creditsData.length;
+        updateCredits();
     });
     
-    document.getElementById('nextButton').addEventListener('click', () => {
-        if (currentIndex < creditItems.length - 1) {
-            currentIndex++;
-        } else {
-            currentIndex = 0;
-        }
-        updateDisplay();
+    document.getElementById('downArrow').addEventListener('click', () => {
+        startAudio();
+        currentIndex = (currentIndex + 1) % creditsData.length;
+        updateCredits();
     });
-
-    // Inicia la música al cargar la página
-    const backgroundMusic = document.getElementById('backgroundMusic');
-    backgroundMusic.play();
-
-    // Inicializar la visualización
-    updateDisplay();
+    
+    document.addEventListener('click', startAudio);
+    document.addEventListener('keydown', startAudio);
+    
+    // Navegación con teclado
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowUp') {
+            currentIndex = (currentIndex - 1 + creditsData.length) % creditsData.length;
+            updateCredits();
+        } else if (e.key === 'ArrowDown') {
+            currentIndex = (currentIndex + 1) % creditsData.length;
+            updateCredits();
+        }
+    });
+    
+    // Inicializar
+    updateCredits();
 });

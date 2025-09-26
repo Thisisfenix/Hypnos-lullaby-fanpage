@@ -1,3 +1,17 @@
+let audioStarted = false;
+const freeplayMusic = document.getElementById('freeplayMusic');
+
+function startAudio() {
+    if (!audioStarted) {
+        freeplayMusic.muted = false;
+        freeplayMusic.play().catch(e => console.log('Audio play failed:', e));
+        audioStarted = true;
+    }
+}
+
+document.addEventListener('click', startAudio);
+document.addEventListener('keydown', startAudio);
+
 // Lista de canciones con sus imágenes y enlaces a las páginas HTML correspondientes
 const songs = [
     {
