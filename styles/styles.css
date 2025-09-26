@@ -1,47 +1,105 @@
-/* Global Styles */
 body {
     font-family: 'Press Start 2P', cursive;
     margin: 0;
     padding: 0;
     background-color: black;
     color: white;
+    overflow: hidden;
 }
 
 .page-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     height: 100vh;
-    text-align: center;
+    width: 100vw;
 }
 
-.page-background {
-    position: relative;
-}
-
-.title img {
-    width: 400px; /* Ajustar tamaño según necesidad */
-    height: auto;
-}
-
-.menu-container {
+.left-section {
+    flex: 0.6;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 1rem; /* Espacio entre los botones */
-    margin-top: 2rem;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 50px;
+    gap: 20px;
 }
 
-.menu-button img {
-    width: 250px; /* Tamaño de los botones */
+.menu-row {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.menu-title {
+    font-size: 48px;
+    color: #888;
+    margin: 0 0 10px 0;
+    animation: titleSway 3s ease-in-out infinite;
+}
+
+.menu-row:nth-child(1) .menu-title { animation-delay: 0s; }
+.menu-row:nth-child(3) .menu-title { animation-delay: 1s; }
+.menu-row:nth-child(5) .menu-title { animation-delay: 2s; }
+
+.menu-link {
+    display: block;
+    text-decoration: none;
+    animation: sway 4s ease-in-out infinite;
+}
+
+.menu-row:nth-child(1) .menu-link { animation-delay: 0s; }
+.menu-row:nth-child(2) .menu-link { animation-delay: 0.5s; }
+.menu-row:nth-child(3) .menu-link { animation-delay: 1s; }
+.menu-row:nth-child(4) .menu-link { animation-delay: 1.5s; }
+.menu-row:nth-child(5) .menu-link { animation-delay: 2s; }
+
+.menu-image {
+    width: 200px;
     height: auto;
-    border: 0px solid #000000; /* Opcional: agrega borde blanco */
-    border-radius: 10px; /* Opcional: bordes redondeados */
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    transition: transform 0.3s ease, filter 0.3s ease;
 }
 
-.menu-button img:hover {
+.menu-link:hover .menu-image {
     transform: scale(1.05);
-    box-shadow: 0 0 0px rgba(0, 0, 0, 0.5); /* Opcional: sombra al pasar el ratón */
+    filter: brightness(1.2);
+}
+
+.pokedex-text {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 24px;
+    color: white;
+    display: block;
+    padding: 25px 0;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.menu-link:hover .pokedex-text {
+    transform: scale(1.05);
+    color: #ffff99;
+}
+
+.right-section {
+    flex: 1.4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.character-gif {
+    max-width: 100%;
+    max-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.character-gif img {
+    width: 100%;
+    height: auto;
+    transform: scale(1.5);
+    object-fit: contain;
+}
+
+@keyframes sway {
+    0%, 100% { transform: translateX(0px); }
+    50% { transform: translateX(15px); }
 }
