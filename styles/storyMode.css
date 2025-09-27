@@ -1,72 +1,119 @@
-/* Global Styles */
 body {
     font-family: 'Press Start 2P', cursive;
     margin: 0;
     padding: 0;
-    background-color: black;
+    background: #000;
     color: white;
-    overflow: hidden; /* Para evitar scrollbars si hay elementos desbordantes */
+    overflow: hidden;
 }
 
 .story-mode-container {
+    height: 100vh;
+    position: relative;
     display: flex;
     flex-direction: column;
+    align-items: center;
+}
+
+/* Title */
+.title {
+    position: absolute;
+    top: 30px;
+    font-size: 1.5rem;
+    color: white;
+    z-index: 10;
+}
+
+/* Cassette floating */
+.cassette-floating {
+    position: absolute;
+    top: 51%;
+    left: 38%;
+    transform: translateX(-50%);
+    z-index: 5;
+}
+
+.cassette-track {
+    display: flex;
     align-items: center;
     justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.cassette {
+    width: 300px;
+    height: 180px;
+    opacity: 0;
+    transition: all 0.4s ease;
+    position: absolute;
+    left: 0;
+    transform: translateX(200px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cassette.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.cassette.slide-left {
+    transform: translateX(-200px);
+    opacity: 0;
+}
+
+.cassette.slide-right {
+    transform: translateX(200px);
+    opacity: 0;
+}
+
+.cassette img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.cassette img.confirm-gif {
+    width: 300px !important;
+    height: 180px !important;
+    object-fit: contain !important;
+    display: block !important;
+}
+
+/* Gameboy at bottom */
+.gameboy-container {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.gameboy-bottom {
+    width: 400px;
+    height: auto;
+}
+
+.white-screen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
     height: 100vh;
-    text-align: center;
-    position: relative;
+    background: #fff;
+    opacity: 0;
+    z-index: 1000;
+    transition: opacity 0.5s ease;
 }
 
-.song-container {
-    margin-bottom: 2rem;
+.white-screen-overlay.active {
+    opacity: 1;
 }
 
-.song-icon {
-    width: 300px; /* Ajusta según el tamaño de tu ícono */
-    height: auto;
-}
 
-.download-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-}
 
-.download-link {
-    display: flex;
-    align-items: center;
-    color: white;
-    text-decoration: none;
-    font-size: 1.2rem;
-    gap: 1rem;
-    transition: color 0.3s;
-}
-
-.download-link:hover {
-    color: #007bff;
-}
-
-.song-icon {
-    width: 100px; /* Ajusta según el tamaño de los íconos de las canciones */
-    height: auto;
-}
-
-.back-button {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    color: #fff;
-    background-color: #dc3545;
-    border: none;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 2rem;
-}
-
-.back-button:hover {
-    background-color: #c82333;
+@media (max-width: 768px) {
+    .gameboy-bottom { width: 300px; }
+    .cassette { width: 150px; height: 100px; }
+    .title { font-size: 1rem; }
 }

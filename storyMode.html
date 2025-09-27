@@ -3,39 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modo Historia - Sonic.exe</title>
+    <title>Story Mode - Hypnos Lullaby</title>
     <link rel="stylesheet" href="styles/storyMode.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="story-mode-container">
-        <!-- Música de fondo en loop -->
         <audio id="backgroundMusic" src="sounds/story.ogg" loop muted></audio>
-
-        <!-- Contenedor del ícono de la canción -->
-        <div class="song-container">
-            <img src="images/song_icon.png" alt="Canción" class="song-icon">
+        
+        <!-- Title -->
+        <div class="title">Hypno's Lullaby</div>
+        
+        <!-- Gameboy floating where cassette was -->
+        <div class="cassette-floating">
+            <div class="cassette-track" id="cassetteTrack">
+                <div class="cassette active" data-song="0">
+                    <img src="weekgifs/hypnoweek.gif" alt="Gameboy" class="gameboy" id="gameboy">
+                </div>
+                <div class="cassette" data-song="1">
+                    <img src="weekgifs/lostsilverweek.gif" alt="Gameboy" class="gameboy-hidden">
+                </div>
+            </div>
         </div>
-
-        <!-- Contenedor de las descargas de las canciones -->
-        <div class="download-container">
-            <a href="https://drive.google.com/your-song1-link" class="download-link" target="_blank">
-                <img src="images/icon1.png" alt="Canción 1" class="song-icon">
-                Canción 1
-            </a>
-            <a href="https://drive.google.com/your-song2-link" class="download-link" target="_blank">
-                <img src="images/icon2.png" alt="Canción 2" class="song-icon">
-                Canción 2
-            </a>
-            <a href="https://drive.google.com/your-song3-link" class="download-link" target="_blank">
-                <img src="images/icon3.png" alt="Canción 3" class="song-icon">
-                Canción 3
-            </a>
+        
+        <!-- Gameboy at bottom -->
+        <div class="gameboy-container">
+            <img src="weekgifs/gameboy.gif" alt="Gameboy" class="gameboy-bottom">
         </div>
-
-        <!-- Botón para regresar al menú -->
-        <a href="index.html" class="back-button">Volver al Menú</a>
-
+        
+        <!-- Full screen white overlay -->
+        <div class="white-screen-overlay" id="whiteScreenOverlay"></div>
+        
         <script src="js/storyMode.js"></script>
     </div>
 </body>
