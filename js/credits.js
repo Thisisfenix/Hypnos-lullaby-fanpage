@@ -12,6 +12,13 @@ const creditsData = [
         quote: "\"Meh brother creando el sitio web XD...\"",
         description: "\"Soy ankush, el creador y diseñador del sitio web de Hypno's Lullaby. Diseñé y construí toda esta experiencia de fanpage desde cero. ¡Espero que disfrutes explorando el mundo de Hypno a través de esta interfaz!\"",
         icon: "icons/ankush.png"
+    },
+    {
+        name: "Deivid",
+        role: "Colaborador",
+        quote: "\"Hey que tal gente como estan espero que bastante bien\"",
+        description: "\"hola mama salgo enun port de funki meiker\"",
+        icon: "icons/Deivid.png"
     }
 ];
 

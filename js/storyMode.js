@@ -11,8 +11,8 @@ const songs = [
     { 
         name: "Monochrome", 
         link: "https://funkymaker.com/monochrome",
-        gif: "weekgifs/gameboy.gif",
-        confirmGif: "weekgifs/gameboyconfirm.gif"
+        gif: "weekgifs/lostsilverweek.gif",
+        confirmGif: "weekgifs/lostsilverweekconfirm.gif"
     },
     { 
         name: "Lost Silver", 
@@ -29,6 +29,10 @@ const cassetteTrack = document.getElementById('cassetteTrack');
 const cassettes = document.querySelectorAll('.cassette');
 const gameboys = document.querySelectorAll('.gameboy, .gameboy-hidden');
 const whiteScreenOverlay = document.getElementById('whiteScreenOverlay');
+const backButton = document.getElementById('backButton');
+const leftBtn = document.getElementById('leftBtn');
+const rightBtn = document.getElementById('rightBtn');
+const selectBtn = document.getElementById('selectBtn');
 
 function startAudio() {
     if (!audioStarted) {
@@ -116,10 +120,45 @@ document.addEventListener('keydown', (e) => {
             e.preventDefault();
             insertCassette();
             break;
+        case 'Escape':
+            e.preventDefault();
+            window.location.href = 'index.html';
+            break;
     }
 });
 
 document.addEventListener('click', startAudio);
+
+// Back button functionality (ya manejado con onclick en HTML)
+
+// Touch controls
+leftBtn.addEventListener('click', () => {
+    startAudio();
+    navigateLeft();
+});
+
+rightBtn.addEventListener('click', () => {
+    startAudio();
+    navigateRight();
+});
+
+selectBtn.addEventListener('click', () => {
+    startAudio();
+    insertCassette();
+});
+
+// Mouse controls for cassettes
+cassettes.forEach((cassette, index) => {
+    cassette.addEventListener('click', () => {
+        startAudio();
+        if (index === currentCassetteIndex) {
+            insertCassette();
+        } else {
+            currentCassetteIndex = index;
+            updateCassettePosition();
+        }
+    });
+});
 
 document.addEventListener('DOMContentLoaded', () => {
     updateCassettePosition();
