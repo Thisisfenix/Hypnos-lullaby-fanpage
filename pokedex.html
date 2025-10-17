@@ -10,10 +10,13 @@
 
     <!-- Estilo personalizado -->
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        @font-face {
+            font-family: 'PokeText';
+            src: url('fonts/poketext.ttf') format('truetype');
+        }
 
         body {
-            font-family: 'Press Start 2P', sans-serif;
+            font-family: 'PokeText', sans-serif;
             background-color: #f0f0f0;
             margin: 0;
             padding: 0;
@@ -24,12 +27,17 @@
         }
 
         .pokedex {
-            width: 700px;
-            background-color: #ffffff;
-            border: 2px solid #000;
-            border-radius: 10px;
+            width: 800px;
+            background-color: #f8f8f8;
+            border: 4px solid #000;
             padding: 20px;
             box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6);
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 1px, #000 1px, #000 2px),
+                repeating-linear-gradient(90deg, transparent, transparent 1px, #000 1px, #000 2px);
+            background-size: 20px 20px;
+            position: relative;
+            padding-bottom: 40px;
         }
 
         .info-area {
@@ -45,40 +53,129 @@
 
         .pokemon-left h2 {
             margin: 10px 0;
+            font-size: 18px;
+            text-align: center;
+            background: url('pokedex/name.png') no-repeat center;
+            background-size: contain;
+            padding: 15px 20px;
+            color: #000;
+            border: none;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .pokemon-left p {
-            font-size: 14px;
-            color: #555;
-            margin: 0;
-            font-weight: bold;
+            font-size: 12px;
+            color: #000;
+            margin: 5px 0;
+            text-align: center;
+            background: white;
+            border: 1px solid #000;
+            padding: 5px;
         }
 
+        .imagen-pokemon {
+            background: white;
+            border: 3px solid #000;
+            padding: 20px;
+            text-align: center;
+            margin: 10px 0;
+            width: 240px;
+            height: 240px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: pan-y;
+            user-select: none;
+        }
+        
         .imagen-pokemon img {
-            width: 100%;
-            max-width: 200px;
-            border: 2px solid #000;
-            border-radius: 5px;
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+            image-rendering: pixelated;
         }
 
         .info-right {
             flex: 1;
             margin-left: 20px;
-            max-width: 300px;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .menu-container {
+            position: relative;
+        }
+
+        .arrow {
+            font-size: 16px;
+            color: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+            background: url('pokedex/arrow.png') no-repeat center;
+            background-size: contain;
+            border: none;
+            padding: 5px;
+            text-align: center;
+            width: 40px;
+            height: 30px;
+            margin: 2px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .arrow:hover, .arrow:active {
+            background: url('pokedex/arrowPressed.png') no-repeat center;
+            background-size: contain;
+        }
+
+        .arrow.down {
+            transform: rotate(180deg);
+        }
+
+        .arrow.down:hover, .arrow.down:active {
+            background: url('pokedex/arrowPressed.png') no-repeat center;
+            background-size: contain;
+            transform: rotate(180deg);
         }
 
         .menu-lateral {
             list-style: none;
             padding: 0;
+            height: 300px;
+            overflow-y: auto;
+            background: white;
+            border: 3px solid #000;
+            padding: 15px;
+            margin: 5px 0;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+            overscroll-behavior: contain;
         }
 
+        .menu-lateral::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        .menu-lateral {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+
+
         .menu-lateral li {
-            padding: 10px 5px;
+            padding: 10px 8px;
             cursor: pointer;
             text-align: left;
-            background-color: #f8f9fa;
+            background-color: transparent;
             margin-bottom: 5px;
-            border-radius: 5px;
+            font-size: 12px;
         }
 
         .menu-lateral li:hover, .menu-lateral li.active {
@@ -94,8 +191,8 @@
         .description-panel {
             background-color: #e8e8e8;
             border: 2px solid #000;
-            padding: 10px;
-            margin-top: 15px;
+            padding: 5px 10px;
+            margin-top: 10px;
             box-shadow: inset 2px 2px 0 #000;
             max-height: 0;
             opacity: 0;
@@ -104,9 +201,11 @@
         }
 
         .description-panel.show {
-            max-height: 150px;
+            max-height: 100px;
             opacity: 1;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
         }
 
         .description-panel::-webkit-scrollbar {
@@ -119,34 +218,137 @@
         }
 
         .toggle-description {
-            background-color: #ddd;
-            border: 2px solid #000;
-            padding: 10px;
+            background: url('pokedex/name.png') no-repeat center;
+            background-size: 500px auto;
+            border: none;
+            padding: 30px 50px;
             cursor: pointer;
             text-transform: uppercase;
-            font-family: 'Press Start 2P', sans-serif;
-            margin-top: 10px;
+            font-family: 'PokeText', sans-serif;
+            margin: 15px auto 0;
             text-align: center;
-            width: calc(100% - 120px);
-            display: inline-block;
+            width: 500px;
+            height: 100px;
+            display: flex;
+            color: #000;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
         }
 
         .back-button {
-            background-color: #ddd;
-            border: 2px solid #000;
-            padding: 10px;
+            background: url('pokedex/back.png') no-repeat center;
+            background-size: contain;
+            border: none;
+            padding: 15px 20px;
             cursor: pointer;
             text-transform: uppercase;
-            font-family: 'Press Start 2P', sans-serif;
-            margin-top: 10px;
+            font-family: 'PokeText', sans-serif;
+            position: absolute;
+            bottom: 0;
+            left: -35px;
             text-align: center;
             width: 100px;
-            display: inline-block;
+            height: 40px;
+            display: block;
+            color: transparent;
+            text-decoration: none;
+        }
+
+        .back-button:hover, .back-button:active {
+            background: url('pokedex/backpress.png') no-repeat center;
+            background-size: contain;
         }
 
         .description-text {
             white-space: pre-wrap;
-            font-size: 10px;
+            font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .pokedex {
+                width: 95%;
+                padding: 10px;
+            }
+            
+            .info-area {
+                flex-direction: column;
+            }
+            
+            .pokemon-left {
+                max-width: 100%;
+                margin-bottom: 20px;
+            }
+            
+            .pokemon-left h2 {
+                font-size: 12px;
+                padding: 10px 15px;
+                min-height: 30px;
+            }
+            
+            .pokemon-left p {
+                font-size: 10px;
+            }
+            
+            .imagen-pokemon {
+                width: 200px;
+                height: 200px;
+                margin: 0 auto;
+            }
+            
+            .info-right {
+                max-width: 100%;
+                margin-left: 0;
+            }
+            
+            .menu-lateral {
+                height: 200px;
+                padding: 10px;
+            }
+            
+            .menu-lateral::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .description-panel::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .menu-lateral li {
+                font-size: 10px;
+                padding: 12px 8px;
+                min-height: 40px;
+                display: flex;
+                align-items: center;
+            }
+            
+            .arrow {
+                width: 50px;
+                height: 35px;
+                font-size: 14px;
+            }
+            
+            .description-panel.show {
+                max-height: 40px;
+            }
+            
+            .description-text {
+                font-size: 10px;
+            }
+            
+            .toggle-description {
+                width: calc(100% - 80px);
+                font-size: 8px;
+                padding: 8px;
+            }
+            
+            .back-button {
+                width: 80px;
+                height: 35px;
+                font-size: 8px;
+                padding: 10px 15px;
+            }
         }
     </style>
 </head>
@@ -156,46 +358,72 @@
         <div class="info-area">
             <!-- Parte izquierda -->
             <div class="pokemon-left">
-                <h2 id="pokemon-name">Gold (Frostbite)</h2>
-                <p id="pokemon-subtitle">The Tortured Trainer</p>
+                <h2 id="pokemon-name">Hypno (Safety Lullaby)</h2>
+                <p id="pokemon-subtitle">The Hypnosis Pokémon</p>
                 <div class="imagen-pokemon">
-                    <img id="pokemon-image" src="images/gold_frostbite.png" alt="Gold (Frostbite)">
+                    <img id="pokemon-image" src="pokedex/HypnoSafetyLullabyArt.png" alt="Hypno (Safety Lullaby)">
                 </div>
             </div>
 
             <!-- Parte derecha -->
             <div class="info-right">
-                <ul class="menu-lateral" id="pokemon-list">
-                    <li onclick="selectPokemon(0)" class="active">Gold (Frostbite)</li>
-                    <li onclick="selectPokemon(1)">Red (Dead Red)</li>
-                    <li onclick="selectPokemon(2)">Pikachu (Freakachu)</li>
-                    <li onclick="selectPokemon(3)">Silver</li>
-                </ul>
-                <div class="stats">
-                    <p>HT: <span id="pokemon-height">???</span> WT: <span id="pokemon-weight">???</span></p>
+                <div class="menu-container">
+                    <div class="arrow up" onclick="navigateUp()">▲</div>
+                    <ul class="menu-lateral" id="pokemon-list">
+                    <li onclick="selectPokemon(0)" class="active">Hypno (Safety Lullaby)</li>
+                    <li onclick="selectPokemon(1)">Hypno (Left Unchecked)</li>
+                    <li onclick="selectPokemon(2)">Hypno (Lost Cause)</li>
+                    <li onclick="selectPokemon(3)">Gold (Monochrome)</li>
+                    <li onclick="selectPokemon(4)">Gold (Frostbite)</li>
+                    <li onclick="selectPokemon(5)">Red (Dead Red)</li>
+                    <li onclick="selectPokemon(6)">Pikachu (Freakachu)</li>
+                    <li onclick="selectPokemon(7)">Silver</li>
+                    <li onclick="selectPokemon(8)">Feraligatr</li>
+                    <li onclick="selectPokemon(9)">Missingno</li>
+                    <li onclick="selectPokemon(10)">Buried Alive</li>
+                    <li onclick="selectPokemon(11)">S!3V3N</li>
+                    <li onclick="selectPokemon(12)">Glitchy Red</li>
+                    <li onclick="selectPokemon(13)">DISABLED</li>
+                    <li onclick="selectPokemon(14)">Ponyta</li>
+                    <li onclick="selectPokemon(15)">Hell Bell</li>
+                    <li onclick="selectPokemon(16)">Purin</li>
+                    <li onclick="selectPokemon(17)">Nurse Joy</li>
+                    <li onclick="selectPokemon(18)">Shinto</li>
+                    <li onclick="selectPokemon(19)">Grey</li>
+                    <li onclick="selectPokemon(20)">Shitno</li>
+                    <li onclick="selectPokemon(21)">Hypno (Pasta Night)</li>
+                    <li onclick="selectPokemon(22)">Lord X</li>
+                    <li onclick="selectPokemon(23)">MX</li>
+                    </ul>
+                    <div class="arrow down" onclick="navigateDown()">▼</div>
                 </div>
             </div>
         </div>
 
+        <!-- Botón toggle arriba -->
+        <button class="toggle-description" onclick="toggleDescription()">DESCRIPTION</button>
+        
         <!-- Panel de descripción -->
         <div class="description-panel" id="description-panel">
             <p id="description-content" class="description-text">
-Gold, trapped in a frozen nightmare, bears the scars of his torment.
+Hypno holds a pendulum in its hand. The arcing movement and glitter of the pendulum lull the foe into a deep state of hypnosis. While this Pokémon searches for prey, it polishes the pendulum.
             </p>
-            <p id="pokemon-stats" class="description-text">HT: ??? WT: ???</p>
+            <p id="pokemon-stats" class="description-text">HT: 6'05" WT: 26.5 lbs</p>
         </div>
 
-        <!-- Botones debajo de la descripción -->
+        <!-- Botón back abajo -->
         <a href="index.html" class="back-button">Back</a>
-        <button class="toggle-description" onclick="toggleDescription()">Toggle Description</button>
     </div>
 
     <!-- Bootstrap JS -->
     <script src="js/bootstrap.bundle.js"></script>
+    <script src="js/pokedex_data.js"></script>
 
     <!-- Script personalizado -->
     <script>
-        const pokemonData = [
+        // Los datos se cargan desde pokedex_data.js
+
+        /*
             {
                 name: "Gold (Frostbite)",
                 subtitle: "The Tortured Trainer",
@@ -228,10 +456,12 @@ Gold, trapped in a frozen nightmare, bears the scars of his torment.
                 height: "1.8m",
                 weight: "70kg"
             }
-        ];
+        */
 
         function selectPokemon(index) {
+            currentIndex = index;
             const currentPokemon = pokemonData[index];
+            
             document.getElementById("pokemon-name").innerText = currentPokemon.name;
             document.getElementById("pokemon-subtitle").innerText = currentPokemon.subtitle || "";
             document.getElementById("pokemon-image").src = currentPokemon.image;
@@ -243,6 +473,12 @@ Gold, trapped in a frozen nightmare, bears the scars of his torment.
             document.querySelectorAll('.menu-lateral li').forEach((li, idx) => {
                 li.classList.toggle('active', idx === index);
             });
+            
+            // Scroll automático al elemento seleccionado
+            const selectedLi = document.querySelector('.menu-lateral li.active');
+            if (selectedLi) {
+                selectedLi.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         }
 
         function toggleDescription() {
@@ -252,6 +488,44 @@ Gold, trapped in a frozen nightmare, bears the scars of his torment.
 
         function goBack() {
             alert("Going back..."); // Aquí puedes añadir la lógica para volver a la pantalla anterior.
+        }
+
+        let currentIndex = 0;
+        let touchStartY = 0;
+        let touchStartX = 0;
+
+        // Gestos táctiles para móvil
+        const pokemonImage = document.querySelector('.imagen-pokemon');
+        const menuLateral = document.querySelector('.menu-lateral');
+
+        pokemonImage.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+            touchStartX = e.touches[0].clientX;
+        });
+
+        pokemonImage.addEventListener('touchend', (e) => {
+            const touchEndY = e.changedTouches[0].clientY;
+            const touchEndX = e.changedTouches[0].clientX;
+            const diffY = touchStartY - touchEndY;
+            const diffX = touchStartX - touchEndX;
+
+            if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 50) {
+                if (diffY > 0) {
+                    navigateDown();
+                } else {
+                    navigateUp();
+                }
+            }
+        });
+
+        function navigateUp() {
+            currentIndex = (currentIndex - 1 + pokemonData.length) % pokemonData.length;
+            selectPokemon(currentIndex);
+        }
+
+        function navigateDown() {
+            currentIndex = (currentIndex + 1) % pokemonData.length;
+            selectPokemon(currentIndex);
         }
 
         // Inicializar con el primer Pokémon
