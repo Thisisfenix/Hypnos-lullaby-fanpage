@@ -16,8 +16,8 @@ const creditsData = [
     {
         name: "Deivid",
         role: "Colaborador",
-        quote: "\"Hey que tal gente como estan espero que bastante bien\"",
-        description: "\"hola mama salgo enun port de funki meiker\"",
+        quote: "\"Hey que tal gente como están espero que bastante bien\"",
+        description: "\"Hola mamá salgo en un port de funki meiker\"",
         icon: "icons/Deivid.png"
     }
 ];
@@ -25,6 +25,14 @@ const creditsData = [
 let currentIndex = 0;
 let audioStarted = false;
 let backgroundMusic;
+let typewriterTimeout;
+let deividClickCount = 0;
+let ankushClickCount = 0;
+let nowzuqClickCount = 0;
+let deividExploded = false;
+let ankushExploded = false;
+let matrixClicked = { deivid: false, ankush: false, nowzuq: false };
+let matrixActive = false;
 
 function startAudio() {
     if (!audioStarted && backgroundMusic) {
@@ -34,26 +42,245 @@ function startAudio() {
     }
 }
 
+function typewriterEffect(element, text, speed = 50) {
+    element.textContent = '';
+    let i = 0;
+    
+    function type() {
+        if (i < text.length) {
+            element.textContent += text.charAt(i);
+            i++;
+            typewriterTimeout = setTimeout(type, speed);
+        }
+    }
+    
+    type();
+}
+
+function getDeividIcon(name, defaultIcon) {
+    if (name !== 'Deivid') return defaultIcon;
+    
+    if (deividClickCount >= 50) {
+        return 'icons/DeividDEAD.png';
+    } else if (deividClickCount >= 20) {
+        return 'icons/DeividDURR.png';
+    }
+    return defaultIcon;
+}
+
+function getAnkushIcon(name, defaultIcon) {
+    if (name !== 'ankush') return defaultIcon;
+    
+    if (ankushClickCount >= 100) {
+        return 'icons/ankushold.png';
+    }
+    return defaultIcon;
+}
+
+function createExplosion(element) {
+    const rect = element.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    for (let i = 0; i < 20; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        const angle = (Math.PI * 2 * i) / 20;
+        const distance = 100 + Math.random() * 50;
+        const dx = Math.cos(angle) * distance;
+        const dy = Math.sin(angle) * distance;
+        
+        particle.style.left = centerX + 'px';
+        particle.style.top = centerY + 'px';
+        particle.style.setProperty('--dx', dx + 'px');
+        particle.style.setProperty('--dy', dy + 'px');
+        particle.style.animation = 'explode 1s ease-out forwards';
+        
+        document.body.appendChild(particle);
+        
+        setTimeout(() => {
+            particle.remove();
+        }, 1000);
+    }
+}
+
+function handleDeividClick(event) {
+    event.stopPropagation();
+    deividClickCount++;
+    
+    const iconImg = event.target;
+    
+    // Activar Matrix en cada click
+    console.log('Deivid clicked - activating matrix');
+    createMatrixRain();
+    
+    // Explosión a los 100 clicks
+    if (deividClickCount === 100) {
+        createExplosion(iconImg);
+        deividExploded = true;
+        iconImg.remove();
+        return;
+    }
+    
+    // Cambiar temporalmente a Deivid2.png
+    iconImg.src = 'icons/Deivid2.png';
+    
+    // Volver al icono correspondiente después de 800ms
+    setTimeout(() => {
+        iconImg.src = getDeividIcon('Deivid', 'icons/Deivid.png');
+    }, 800);
+}
+
+function handleAnkushClick(event) {
+    event.stopPropagation();
+    ankushClickCount++;
+    
+    const iconImg = event.target;
+    
+    // Activar Matrix en cada click
+    console.log('Ankush clicked - activating matrix');
+    createMatrixRain();
+    
+    // Explosión a los 200 clicks
+    if (ankushClickCount === 200) {
+        createExplosion(iconImg);
+        ankushExploded = true;
+        iconImg.remove();
+        return;
+    }
+    
+    // Efecto de parpadeo
+    iconImg.style.opacity = '0.3';
+    
+    setTimeout(() => {
+        iconImg.style.opacity = '1';
+        iconImg.src = getAnkushIcon('ankush', 'icons/ankush.png');
+    }, 300);
+}
+
+function createMatrixRain() {
+    if (matrixActive) return;
+    matrixActive = true;
+    
+    console.log('Creating Matrix rain...');
+    const icons = ['icons/nowzuq.png', 'icons/ankush.png', 'icons/Deivid.png'];
+    const isMobile = window.innerWidth <= 768;
+    const iconCount = isMobile ? 30 : 50;
+    
+    console.log(`Matrix config: mobile=${isMobile}, iconCount=${iconCount}`);
+    
+    for (let i = 0; i < iconCount; i++) {
+        setTimeout(() => {
+            const matrixIcon = document.createElement('img');
+            matrixIcon.src = icons[Math.floor(Math.random() * icons.length)];
+            matrixIcon.className = 'matrix-icon';
+            
+            const startX = Math.random() * window.innerWidth;
+            const duration = 2 + Math.random() * 1.5;
+            
+            matrixIcon.style.left = startX + 'px';
+            matrixIcon.style.animation = `matrixFall ${duration}s linear forwards`;
+            
+            console.log(`Creating matrix icon ${i}: x=${startX}, duration=${duration}`);
+            document.body.appendChild(matrixIcon);
+            
+            setTimeout(() => {
+                matrixIcon.remove();
+            }, duration * 1000);
+        }, i * (isMobile ? 60 : 40));
+    }
+    
+    setTimeout(() => {
+        matrixActive = false;
+        console.log('Matrix rain finished');
+    }, 10000);
+}
+
+function checkMatrixTrigger() {
+    console.log('Matrix status:', matrixClicked);
+    if (matrixClicked.deivid && matrixClicked.ankush && matrixClicked.nowzuq) {
+        console.log('Matrix activated!');
+        createMatrixRain();
+        // Reset inmediato para poder activarlo de nuevo
+        matrixClicked = { deivid: false, ankush: false, nowzuq: false };
+    }
+}
+
+function handleNowzuqClick(event) {
+    event.stopPropagation();
+    nowzuqClickCount++;
+    
+    const iconImg = event.target;
+    
+    // Activar Matrix en cada click
+    console.log('Nowzuq clicked - activating matrix');
+    createMatrixRain();
+    
+    // Efecto glitch a los 20 clicks
+    if (nowzuqClickCount >= 20) {
+        iconImg.classList.add('glitching');
+    }
+    
+    // Efecto de sacudida al hacer click
+    iconImg.style.transform = 'scale(0.9)';
+    setTimeout(() => {
+        iconImg.style.transform = '';
+    }, 100);
+}
+
 function updateCredits() {
     const credit = creditsData[currentIndex];
+    
+    // Limpiar timeout anterior si existe
+    if (typewriterTimeout) {
+        clearTimeout(typewriterTimeout);
+    }
+    
     document.getElementById('creditHeader').textContent = credit.name;
     document.getElementById('creditSubtitle').textContent = credit.role;
     document.getElementById('creditQuote').textContent = credit.quote;
-    document.getElementById('creditDescription').textContent = credit.description;
+    
+    // Aplicar efecto de escritura a la descripción
+    const descriptionElement = document.getElementById('creditDescription');
+    typewriterEffect(descriptionElement, credit.description, 30);
     
     // Actualizar iconos
     const portraitsContainer = document.querySelector('.character-portraits');
     portraitsContainer.innerHTML = '';
     
     creditsData.forEach((person, index) => {
-        if (person.icon) {
+        if (person.icon && !(person.name === 'Deivid' && deividExploded) && !(person.name === 'ankush' && ankushExploded)) {
             const iconImg = document.createElement('img');
-            iconImg.src = person.icon;
+            let iconSrc = person.icon;
+            if (person.name === 'Deivid') {
+                iconSrc = getDeividIcon(person.name, person.icon);
+            } else if (person.name === 'ankush') {
+                iconSrc = getAnkushIcon(person.name, person.icon);
+            }
+            iconImg.src = iconSrc;
             iconImg.alt = person.name;
             iconImg.className = 'character-icon';
             if (index === currentIndex) {
                 iconImg.classList.add('selected');
             }
+            
+            // Agregar click listeners
+            if (person.name === 'Deivid') {
+                iconImg.addEventListener('click', handleDeividClick);
+                iconImg.style.cursor = 'pointer';
+            } else if (person.name === 'ankush') {
+                iconImg.addEventListener('click', handleAnkushClick);
+                iconImg.style.cursor = 'pointer';
+            } else if (person.name === 'nowzuq') {
+                iconImg.addEventListener('click', handleNowzuqClick);
+                iconImg.style.cursor = 'pointer';
+                // Aplicar glitch si ya tiene 20+ clicks
+                if (nowzuqClickCount >= 20) {
+                    iconImg.classList.add('glitching');
+                }
+            }
+            
             portraitsContainer.appendChild(iconImg);
         }
     });

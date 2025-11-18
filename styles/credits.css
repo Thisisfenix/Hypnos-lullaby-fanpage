@@ -4,7 +4,6 @@ html, body {
     padding: 0;
     background-color: black;
     color: white;
-    overflow: hidden;
     border: none;
     outline: none;
     width: 100%;
@@ -153,11 +152,130 @@ html, body {
     width: 50px;
     height: 50px;
     transform: scaleX(-1);
+    transition: all 0.2s ease;
 }
 
 .character-icon[src*="Deivid"]:hover,
 .character-icon[src*="Deivid"].selected {
     transform: scaleX(-1) scale(1.05);
+}
+
+.character-icon[src*="DeividDURR"] {
+    filter: brightness(0.8);
+}
+
+.character-icon[src*="DeividDEAD"] {
+    filter: brightness(0.6);
+    opacity: 0.8;
+}
+
+.character-icon[src*="ankush"] {
+    transition: all 0.3s ease;
+}
+
+.character-icon[src*="ankushold"] {
+    filter: brightness(0.8);
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background-color: #ff6b6b;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+@keyframes explode {
+    0% {
+        transform: scale(1) translate(0, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.5) translate(var(--dx), var(--dy));
+        opacity: 0;
+    }
+}
+
+@keyframes glitch {
+    0% {
+        transform: translate(0, 0);
+        filter: brightness(0.7);
+    }
+    10% {
+        transform: translate(-2px, 1px) skew(1deg);
+        filter: brightness(0.7) hue-rotate(90deg);
+    }
+    20% {
+        transform: translate(1px, -1px) skew(-1deg);
+        filter: brightness(0.7) hue-rotate(180deg);
+    }
+    30% {
+        transform: translate(-1px, 2px) skew(0.5deg);
+        filter: brightness(0.7) hue-rotate(270deg);
+    }
+    40% {
+        transform: translate(2px, -2px) skew(-0.5deg);
+        filter: brightness(0.7) hue-rotate(0deg) saturate(2);
+    }
+    50% {
+        transform: translate(0, 0) skew(0deg);
+        filter: brightness(0.7) invert(1);
+    }
+    60% {
+        transform: translate(1px, 1px) skew(1deg);
+        filter: brightness(0.7) hue-rotate(45deg);
+    }
+    70% {
+        transform: translate(-2px, 0px) skew(-1deg);
+        filter: brightness(0.7) contrast(2);
+    }
+    80% {
+        transform: translate(0px, -1px) skew(0.5deg);
+        filter: brightness(0.7) hue-rotate(315deg);
+    }
+    90% {
+        transform: translate(1px, 2px) skew(-0.5deg);
+        filter: brightness(0.7) saturate(0.5);
+    }
+    100% {
+        transform: translate(0, 0);
+        filter: brightness(0.7);
+    }
+}
+
+.character-icon[src*="nowzuq"].glitching {
+    animation: glitch 0.3s infinite;
+}
+
+.matrix-icon {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.8;
+    top: -100px;
+}
+
+@media (max-width: 768px) {
+    .matrix-icon {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@keyframes matrixFall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(calc(100vh + 200px)) rotate(360deg);
+        opacity: 0;
+    }
 }
 
 .navigation-arrows {
@@ -224,6 +342,8 @@ html, body {
     color: white;
     line-height: 1.5;
     text-align: justify;
+    text-justify: inter-word;
+    word-spacing: normal;
     flex: 1;
     overflow-y: auto;
 }
@@ -325,6 +445,9 @@ html, body {
     .credit-description {
         font-size: 5px;
         line-height: 1.2;
+        text-align: justify;
+        text-justify: inter-word;
+        word-spacing: normal;
     }
     
     .back-button {
