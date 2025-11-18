@@ -3,32 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extras - Sonic.exe</title>
+    <link rel="icon" type="image/x-icon" href="icons/icon.ico">
+    <title>Extras - Hypno Lullaby</title>
     <link rel="stylesheet" href="styles/extras.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="page-container">
-        <h1 class="title">
-            Extras - Sonic.exe
-        </h1>
-        <div class="media-container">
-            <div class="media-display">
-                <!-- El contenido de medios se cargará dinámicamente aquí -->
-                <div id="media" class="media-content"></div>
+    <div class="extras-container">
+        <audio id="extraMusic" src="sounds/Extra.ogg" loop muted></audio>
+        
+        <!-- Header -->
+        <div class="header">
+            <h1 class="title">EXTRAS</h1>
+            <div class="subtitle">Hypno's Lullaby Gallery</div>
+        </div>
+        
+        <!-- Main Gallery -->
+        <div class="gallery-container">
+            <div class="gallery-frame">
+                <div class="media-display" id="mediaDisplay">
+                    <div id="media" class="media-content"></div>
+                </div>
+                
+                <div class="gallery-info">
+                    <div class="media-counter" id="mediaCounter">1 / 25</div>
+                    <div class="media-title" id="mediaTitle">Extra Content</div>
+                </div>
             </div>
-            <div class="media-controls">
-                <button id="prevBtn">◀</button>
-                <button id="nextBtn">▶</button>
+            
+            <div class="navigation-controls">
+                <button class="nav-btn prev-btn" id="prevBtn">◀ PREV</button>
+                <button class="nav-btn next-btn" id="nextBtn">NEXT ▶</button>
             </div>
         </div>
-        <a href="index.html" class="back-button">Regresar al Menú Principal</a>
+        
+        <!-- Music Controls -->
+        <div class="music-panel">
+            <div class="music-title">♪ Background Music ♪</div>
+            <div class="music-controls">
+                <button class="music-btn" id="playPauseBtn">PAUSE</button>
+                <button class="music-btn" id="volumeDownBtn">VOL -</button>
+                <button class="music-btn" id="volumeUpBtn">VOL +</button>
+            </div>
+        </div>
+        
+        <!-- Back Button -->
+        <a href="index.html" class="back-button">← BACK TO MENU</a>
     </div>
-    <audio id="extraMusic" src="sounds/Extra.ogg" loop muted></audio>
-    <div class="music-controls">
-        <button id="playPauseBtn">Pause</button>
-        <button id="volumeUpBtn">Vol +</button>
-        <button id="volumeDownBtn">Vol -</button>
-    </div>
+    
     <script src="js/extras.js"></script>
 </body>
 </html>

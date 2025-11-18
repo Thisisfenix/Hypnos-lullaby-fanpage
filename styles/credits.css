@@ -121,7 +121,7 @@ html, body {
 
 .character-portraits {
     width: 120px;
-    height: 200px;
+    height: 250px;
     background-color: rgba(0, 0, 0, 0.8);
     border: 2px solid white;
     border-radius: 8px;
@@ -140,6 +140,10 @@ html, body {
     object-fit: cover;
     transition: all 0.3s ease;
     filter: brightness(0.7);
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
 }
 
 .character-icon:hover,
@@ -164,9 +168,22 @@ html, body {
     filter: brightness(0.8);
 }
 
+.character-icon[src*="DeividDURR"]:hover,
+.character-icon[src*="DeividDURR"].selected {
+    filter: brightness(1.2) drop-shadow(0 0 10px #ffff99);
+    transform: scaleX(-1) scale(1.05);
+}
+
 .character-icon[src*="DeividDEAD"] {
     filter: brightness(0.6);
     opacity: 0.8;
+}
+
+.character-icon[src*="DeividDEAD"]:hover,
+.character-icon[src*="DeividDEAD"].selected {
+    filter: brightness(1.2) drop-shadow(0 0 10px #ffff99);
+    transform: scaleX(-1) scale(1.05);
+    opacity: 1;
 }
 
 .character-icon[src*="ankush"] {
@@ -310,7 +327,7 @@ html, body {
     border: 3px solid white;
     border-radius: 10px;
     padding: 20px;
-    height: calc(100% - 40px);
+    height: calc(100% - 20px);
     display: flex;
     flex-direction: column;
     gap: 15px;

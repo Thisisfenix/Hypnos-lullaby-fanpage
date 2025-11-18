@@ -1,7 +1,14 @@
 const creditsData = [
     {
+        name: "Hypno's Lullaby Team",
+        role: "Equipo de Desarrollo Original",
+        quote: "\"The original creators of this amazing mod\"",
+        description: "\"Banbuds (Director, Artist, Animator), MarStarBro (Musician), Saster (Programmer), Cerbera (Artist) y muchos otros colaboradores que hicieron posible Hypno's Lullaby. Gracias por crear este increíble mod de Friday Night Funkin' que nos inspiró a hacer este port.\"",
+        icon: "icons/icon.ico"
+    },
+    {
         name: "nowzuq",
-        role: "Porteador",
+        role: "Porteador a Funky Maker Mobile",
         quote: "\"Llevando Hypno's Lullaby a móviles\"",
         description: "\"Soy nowzuq y estoy trabajando en portear el mod de Hypno's Lullaby a Funky Maker Mobile para que sea accesible en dispositivos móviles. ¡Es emocionante ayudar a expandir el alcance de este increíble mod!\"",
         icon: "icons/nowzuq.png"
@@ -10,14 +17,14 @@ const creditsData = [
         name: "ankush",
         role: "Creador Web y Diseñador",
         quote: "\"Meh brother creando el sitio web XD...\"",
-        description: "\"Soy ankush, el creador y diseñador del sitio web de Hypno's Lullaby. Diseñé y construí toda esta experiencia de fanpage desde cero. ¡Espero que disfrutes explorando el mundo de Hypno a través de esta interfaz!\"",
+        description: "\"Soy ankush, el creador y diseñador del sitio web de Hypno's Lullaby. Diseñé y construí toda esta experiencia de fanpage desde cero para acompañar nuestro port a Funky Maker Mobile. ¡Espero que disfrutes explorando el mundo de Hypno a través de esta interfaz!\"",
         icon: "icons/ankush.png"
     },
     {
         name: "Deivid",
-        role: "Colaborador",
+        role: "Colaborador del Port",
         quote: "\"Hey que tal gente como están espero que bastante bien\"",
-        description: "\"Hola mamá salgo en un port de funki meiker\"",
+        description: "\"Hola mamá salgo en un port de funki meiker. Ayudé en el desarrollo del port de Hypno's Lullaby para Funky Maker Mobile junto con el equipo.\"",
         icon: "icons/Deivid.png"
     }
 ];
@@ -31,7 +38,7 @@ let ankushClickCount = 0;
 let nowzuqClickCount = 0;
 let deividExploded = false;
 let ankushExploded = false;
-let matrixClicked = { deivid: false, ankush: false, nowzuq: false };
+let matrixClicked = { deivid: false, ankush: false, nowzuq: false, hypnoteam: false };
 let matrixActive = false;
 
 function startAudio() {
@@ -132,6 +139,25 @@ function handleDeividClick(event) {
     if (deividClickCount === 100) {
         createExplosion(iconImg);
         deividExploded = true;
+        
+        // Después de la explosión, reemplazar entrada de créditos de Deivid
+        setTimeout(() => {
+            // Encontrar y reemplazar la entrada de Deivid
+            const deividIndex = creditsData.findIndex(credit => credit.name === "Deivid");
+            if (deividIndex !== -1) {
+                creditsData[deividIndex] = {
+                    name: "Oh no, maté a Deivid",
+                    role: "Memorial",
+                    quote: "\"RIP Deivid - Clickeado hasta la muerte\"",
+                    description: "\"Deivid fue clickeado 100 veces y no pudo resistir más. Ahora descansa en paz. Su sacrificio no será olvidado.\"<br><br><img src='images/oh no mate a deivid.png' style='width: 100%; max-height: 150px; object-fit: contain; border-radius: 5px; margin-top: 10px;' alt='Memorial de Deivid'>",
+                    icon: "images/oh no mate a deivid.png"
+                };
+            }
+            
+            // Actualizar los créditos para mostrar los iconos actualizados
+            updateCredits();
+        }, 5000); // Esperar 5 segundos después de la explosión
+        
         iconImg.remove();
         return;
     }
@@ -143,6 +169,14 @@ function handleDeividClick(event) {
     setTimeout(() => {
         iconImg.src = getDeividIcon('Deivid', 'icons/Deivid.png');
     }, 800);
+}
+
+function showDeividDeathImage(event) {
+    event.stopPropagation();
+    
+    // Mostrar la imagen grande en la caja de descripción
+    const descriptionElement = document.getElementById('creditDescription');
+    descriptionElement.innerHTML = '<img src="images/oh no mate a deivid.png" style="width: 100%; height: auto; object-fit: contain; border-radius: 5px;" alt="Oh no, maté a Deivid">';
 }
 
 function handleAnkushClick(event) {
@@ -177,7 +211,7 @@ function createMatrixRain() {
     matrixActive = true;
     
     console.log('Creating Matrix rain...');
-    const icons = ['icons/nowzuq.png', 'icons/ankush.png', 'icons/Deivid.png'];
+    const icons = ['icons/nowzuq.png', 'icons/ankush.png', 'icons/Deivid.png', 'icons/icon.ico'];
     const isMobile = window.innerWidth <= 768;
     const iconCount = isMobile ? 20 : 50;
     const iconSize = isMobile ? '20px' : '30px';
@@ -216,13 +250,29 @@ function createMatrixRain() {
     }, isMobile ? 8000 : 10000);
 }
 
+function handleHypnoTeamClick(event) {
+    event.stopPropagation();
+    
+    const iconImg = event.target;
+    
+    // Activar Matrix en cada click
+    console.log('Hypno Team clicked - activating matrix');
+    createMatrixRain();
+    
+    // Efecto de brillo dorado
+    iconImg.style.filter = 'brightness(1.5) drop-shadow(0 0 15px gold)';
+    setTimeout(() => {
+        iconImg.style.filter = '';
+    }, 500);
+}
+
 function checkMatrixTrigger() {
     console.log('Matrix status:', matrixClicked);
-    if (matrixClicked.deivid && matrixClicked.ankush && matrixClicked.nowzuq) {
+    if (matrixClicked.deivid && matrixClicked.ankush && matrixClicked.nowzuq && matrixClicked.hypnoteam) {
         console.log('Matrix activated!');
         createMatrixRain();
         // Reset inmediato para poder activarlo de nuevo
-        matrixClicked = { deivid: false, ankush: false, nowzuq: false };
+        matrixClicked = { deivid: false, ankush: false, nowzuq: false, hypnoteam: false };
     }
 }
 
@@ -262,7 +312,13 @@ function updateCredits() {
     
     // Aplicar efecto de escritura a la descripción
     const descriptionElement = document.getElementById('creditDescription');
-    typewriterEffect(descriptionElement, credit.description, 30);
+    if (credit.description.includes('<img')) {
+        // Si contiene HTML (imagen), usar innerHTML directamente
+        descriptionElement.innerHTML = credit.description;
+    } else {
+        // Si es texto normal, usar efecto de escritura
+        typewriterEffect(descriptionElement, credit.description, 30);
+    }
     
     // Actualizar iconos
     const portraitsContainer = document.querySelector('.character-portraits');
@@ -301,6 +357,10 @@ function updateCredits() {
                 if (nowzuqClickCount >= 20) {
                     iconImg.classList.add('glitching');
                 }
+            } else if (person.name === "Hypno's Lullaby Team") {
+                iconImg.addEventListener('click', handleHypnoTeamClick);
+                iconImg.addEventListener('touchend', handleHypnoTeamClick);
+                iconImg.style.cursor = 'pointer';
             }
             
             portraitsContainer.appendChild(iconImg);
@@ -388,6 +448,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target.classList.contains('character-icon')) {
             e.preventDefault();
         }
+    });
+    
+    // Prevenir doble click en iconos
+    document.querySelectorAll('.character-icon').forEach(icon => {
+        icon.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+        });
     });
     
     // Inicializar

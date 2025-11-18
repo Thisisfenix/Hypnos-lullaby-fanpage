@@ -60,8 +60,23 @@ document.addEventListener('DOMContentLoaded', () => {
             const video = document.createElement('video');
             video.src = media.src;
             video.controls = true;
-            video.autoplay = true; // Auto reproducir el video cuando se carga
+            video.autoplay = true;
             mediaContent.appendChild(video);
+        }
+        
+        // Actualizar contador
+        updateCounter();
+    }
+
+    function updateCounter() {
+        const counter = document.getElementById('mediaCounter');
+        const title = document.getElementById('mediaTitle');
+        if (counter) {
+            counter.textContent = `${currentIndex + 1} / ${mediaList.length}`;
+        }
+        if (title) {
+            const media = mediaList[currentIndex];
+            title.textContent = media.type === 'video' ? 'Video Content' : 'Image Content';
         }
     }
 
