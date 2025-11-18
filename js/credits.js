@@ -45,12 +45,14 @@ function startAudio() {
 function typewriterEffect(element, text, speed = 50) {
     element.textContent = '';
     let i = 0;
+    const isMobile = window.innerWidth <= 768;
+    const adjustedSpeed = isMobile ? Math.max(speed * 0.7, 20) : speed;
     
     function type() {
         if (i < text.length) {
             element.textContent += text.charAt(i);
             i++;
-            typewriterTimeout = setTimeout(type, speed);
+            typewriterTimeout = setTimeout(type, adjustedSpeed);
         }
     }
     
@@ -81,13 +83,16 @@ function createExplosion(element) {
     const rect = element.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
+    const isMobile = window.innerWidth <= 768;
+    const particleCount = isMobile ? 12 : 20;
+    const maxDistance = isMobile ? 60 : 100;
     
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
         
-        const angle = (Math.PI * 2 * i) / 20;
-        const distance = 100 + Math.random() * 50;
+        const angle = (Math.PI * 2 * i) / particleCount;
+        const distance = maxDistance + Math.random() * (isMobile ? 30 : 50);
         const dx = Math.cos(angle) * distance;
         const dy = Math.sin(angle) * distance;
         
@@ -96,11 +101,19 @@ function createExplosion(element) {
         particle.style.setProperty('--dx', dx + 'px');
         particle.style.setProperty('--dy', dy + 'px');
         particle.style.animation = 'explode 1s ease-out forwards';
+        particle.style.pointerEvents = 'none';
+        
+        if (isMobile) {
+            particle.style.width = '4px';
+            particle.style.height = '4px';
+        }
         
         document.body.appendChild(particle);
         
         setTimeout(() => {
-            particle.remove();
+            if (particle.parentNode) {
+                particle.remove();
+            }
         }, 1000);
     }
 }
@@ -166,7 +179,8 @@ function createMatrixRain() {
     console.log('Creating Matrix rain...');
     const icons = ['icons/nowzuq.png', 'icons/ankush.png', 'icons/Deivid.png'];
     const isMobile = window.innerWidth <= 768;
-    const iconCount = isMobile ? 30 : 50;
+    const iconCount = isMobile ? 20 : 50;
+    const iconSize = isMobile ? '20px' : '30px';
     
     console.log(`Matrix config: mobile=${isMobile}, iconCount=${iconCount}`);
     
@@ -176,25 +190,30 @@ function createMatrixRain() {
             matrixIcon.src = icons[Math.floor(Math.random() * icons.length)];
             matrixIcon.className = 'matrix-icon';
             
-            const startX = Math.random() * window.innerWidth;
-            const duration = 2 + Math.random() * 1.5;
+            const startX = Math.random() * (window.innerWidth - 30);
+            const duration = isMobile ? 1.5 + Math.random() * 1 : 2 + Math.random() * 1.5;
             
             matrixIcon.style.left = startX + 'px';
+            matrixIcon.style.width = iconSize;
+            matrixIcon.style.height = iconSize;
             matrixIcon.style.animation = `matrixFall ${duration}s linear forwards`;
+            matrixIcon.style.pointerEvents = 'none';
             
             console.log(`Creating matrix icon ${i}: x=${startX}, duration=${duration}`);
             document.body.appendChild(matrixIcon);
             
             setTimeout(() => {
-                matrixIcon.remove();
+                if (matrixIcon.parentNode) {
+                    matrixIcon.remove();
+                }
             }, duration * 1000);
-        }, i * (isMobile ? 60 : 40));
+        }, i * (isMobile ? 80 : 40));
     }
     
     setTimeout(() => {
         matrixActive = false;
         console.log('Matrix rain finished');
-    }, 10000);
+    }, isMobile ? 8000 : 10000);
 }
 
 function checkMatrixTrigger() {
@@ -265,15 +284,18 @@ function updateCredits() {
                 iconImg.classList.add('selected');
             }
             
-            // Agregar click listeners
+            // Agregar click y touch listeners
             if (person.name === 'Deivid') {
                 iconImg.addEventListener('click', handleDeividClick);
+                iconImg.addEventListener('touchend', handleDeividClick);
                 iconImg.style.cursor = 'pointer';
             } else if (person.name === 'ankush') {
                 iconImg.addEventListener('click', handleAnkushClick);
+                iconImg.addEventListener('touchend', handleAnkushClick);
                 iconImg.style.cursor = 'pointer';
             } else if (person.name === 'nowzuq') {
                 iconImg.addEventListener('click', handleNowzuqClick);
+                iconImg.addEventListener('touchend', handleNowzuqClick);
                 iconImg.style.cursor = 'pointer';
                 // Aplicar glitch si ya tiene 20+ clicks
                 if (nowzuqClickCount >= 20) {
@@ -286,32 +308,85 @@ function updateCredits() {
     });
 }
 
+// Variables para soporte táctil
+let touchStartY = 0;
+let touchEndY = 0;
+
+// Función para manejar navegación
+function navigateUp() {
+    startAudio();
+    currentIndex = (currentIndex - 1 + creditsData.length) % creditsData.length;
+    updateCredits();
+}
+
+function navigateDown() {
+    startAudio();
+    currentIndex = (currentIndex + 1) % creditsData.length;
+    updateCredits();
+}
+
+// Función para manejar swipe
+function handleSwipe() {
+    const swipeThreshold = 50;
+    const swipeDistance = touchStartY - touchEndY;
+    
+    if (Math.abs(swipeDistance) > swipeThreshold) {
+        if (swipeDistance > 0) {
+            // Swipe hacia arriba - siguiente
+            navigateDown();
+        } else {
+            // Swipe hacia abajo - anterior
+            navigateUp();
+        }
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     backgroundMusic = document.getElementById('backgroundMusic');
     
-    document.getElementById('upArrow').addEventListener('click', () => {
-        startAudio();
-        currentIndex = (currentIndex - 1 + creditsData.length) % creditsData.length;
-        updateCredits();
+    // Event listeners para flechas
+    document.getElementById('upArrow').addEventListener('click', navigateUp);
+    document.getElementById('downArrow').addEventListener('click', navigateDown);
+    
+    // Soporte táctil para flechas
+    document.getElementById('upArrow').addEventListener('touchend', (e) => {
+        e.preventDefault();
+        navigateUp();
     });
     
-    document.getElementById('downArrow').addEventListener('click', () => {
-        startAudio();
-        currentIndex = (currentIndex + 1) % creditsData.length;
-        updateCredits();
+    document.getElementById('downArrow').addEventListener('touchend', (e) => {
+        e.preventDefault();
+        navigateDown();
     });
     
+    // Eventos para iniciar audio
     document.addEventListener('click', startAudio);
+    document.addEventListener('touchstart', startAudio);
     document.addEventListener('keydown', startAudio);
     
     // Navegación con teclado
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowUp') {
-            currentIndex = (currentIndex - 1 + creditsData.length) % creditsData.length;
-            updateCredits();
+            navigateUp();
         } else if (e.key === 'ArrowDown') {
-            currentIndex = (currentIndex + 1) % creditsData.length;
-            updateCredits();
+            navigateDown();
+        }
+    });
+    
+    // Soporte para swipe en móviles
+    document.addEventListener('touchstart', (e) => {
+        touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+    
+    document.addEventListener('touchend', (e) => {
+        touchEndY = e.changedTouches[0].screenY;
+        handleSwipe();
+    }, { passive: true });
+    
+    // Prevenir zoom en doble tap en móviles
+    document.addEventListener('touchend', (e) => {
+        if (e.target.classList.contains('character-icon')) {
+            e.preventDefault();
         }
     });
     
